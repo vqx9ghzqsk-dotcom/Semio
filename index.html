@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SémioExpert - DRETTEP Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -30,6 +30,34 @@
             background-color: var(--bg-light);
             color: var(--text-dark);
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            display: none;
+            background-color: var(--white);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .mobile-header .logo {
+            font-size: 20px;
+            color: var(--primary-dark);
+            margin: 0;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-dark);
+            cursor: pointer;
         }
 
         /* Sidebar */
@@ -40,6 +68,8 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
+            transition: transform 0.3s ease;
+            z-index: 100;
         }
 
         .logo {
@@ -95,6 +125,8 @@
             flex: 1;
             padding: 30px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Top Stats */
@@ -126,6 +158,7 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
+            flex-shrink: 0;
         }
 
         .stat-card:nth-child(1) .stat-icon { background: #ccfbf1; color: #0f766e; }
@@ -138,17 +171,23 @@
         /* Table Section */
         h2 { margin-bottom: 20px; font-size: 20px; color: #334155; }
 
-        .table-container {
+        .table-wrapper {
             background: var(--white);
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            overflow: hidden;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            min-width: 600px; /* Force scroll on small screens */
         }
 
         th {
@@ -175,6 +214,7 @@
             border-radius: 20px;
             font-size: 11px;
             font-weight: bold;
+            white-space: nowrap;
         }
 
         /* Specialty Colors */
@@ -195,6 +235,7 @@
             cursor: pointer;
             font-size: 12px;
             transition: 0.2s;
+            white-space: nowrap;
         }
         .btn-visualiser:hover { background: var(--primary-dark); color: white; }
 
@@ -217,12 +258,15 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            padding: 15px; /* Spacing for mobile */
         }
 
         .modal-content {
             background: var(--white);
-            width: 900px;
-            height: 600px;
+            width: 100%;
+            max-width: 900px;
+            height: 90vh; /* Responsive height */
+            max-height: 600px;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
@@ -231,22 +275,23 @@
         }
 
         .modal-header {
-            padding: 20px 30px;
+            padding: 20px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .modal-header h3 { font-size: 22px; margin-top: 5px;}
-        .modal-spec { font-size: 12px; font-weight: bold; color: var(--primary-dark); text-transform: uppercase; }
+        .modal-header h3 { font-size: 20px; margin-top: 5px;}
+        .modal-spec { font-size: 11px; font-weight: bold; color: var(--primary-dark); text-transform: uppercase; }
         
         .close-btn {
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             color: var(--text-gray);
+            padding: 5px;
         }
 
         .modal-body {
@@ -260,6 +305,7 @@
             padding: 20px;
             border-right: 1px solid var(--border-color);
             background: #fcfcfc;
+            overflow-y: auto;
         }
 
         .drettep-tab {
@@ -269,9 +315,10 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
-            color: #3b82f6; /* Blue matching screenshot */
+            color: #3b82f6;
             background: #fff;
             border: 1px solid transparent;
+            transition: 0.2s;
         }
 
         .drettep-tab.active {
@@ -283,7 +330,7 @@
 
         .modal-data {
             flex: 1;
-            padding: 30px;
+            padding: 20px;
             overflow-y: auto;
             background: var(--white);
         }
@@ -297,13 +344,111 @@
         }
 
         .data-card strong { color: var(--text-dark); }
-        .data-card table { width: 100%; margin-top: 10px; border-collapse: collapse; }
-        .data-card th, .data-card td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+        .data-card table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 14px; }
+        .data-card th, .data-card td { padding: 8px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+
+        /* Sidebar Overlay for mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 90;
+        }
+
+        /* ================= MEDIA QUERIES (MOBILE & TABLET) ================= */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            /* Sidebar hidden off-canvas */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+
+            /* Stats stack vertically */
+            .stats-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            /* Modal layout adapts to mobile */
+            .modal-content {
+                height: 95vh;
+            }
+
+            .modal-body {
+                flex-direction: column;
+            }
+
+            .modal-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 10px;
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                /* Cache la scrollbar mais garde le défilement */
+                scrollbar-width: none; 
+            }
+            .modal-sidebar::-webkit-scrollbar { display: none; }
+
+            .drettep-tab {
+                min-width: 110px;
+                margin-bottom: 0;
+                margin-right: 8px;
+                text-align: center;
+            }
+            
+            .drettep-tab span {
+                display: inline;
+                margin-right: 5px;
+            }
+
+            .modal-data {
+                padding: 15px;
+            }
+            
+            .data-card table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
+
+    <div class="mobile-header">
+        <div class="logo"><i class="fas fa-stethoscope"></i> SémioExpert</div>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+    </div>
+
+    <div class="sidebar" id="sidebar">
         <div class="logo">
             <i class="fas fa-stethoscope"></i> SémioExpert
         </div>
@@ -343,19 +488,21 @@
         </div>
 
         <h2>Dernières Fiches Pathologiques</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>PATHOLOGIE</th>
-                        <th>SPÉCIALITÉ</th>
-                        <th>STATUT</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    </tbody>
-            </table>
+        <div class="table-wrapper">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PATHOLOGIE</th>
+                            <th>SPÉCIALITÉ</th>
+                            <th>STATUT</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -386,261 +533,261 @@
     </div>
 
     <script>
-        // Base de données structurée DRETTEP pour TOUTES les pathologies demandées
+        // Fonction pour gérer le menu mobile
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('show');
+            document.getElementById('sidebarOverlay').classList.toggle('show');
+        }
+
+        // Base de données structurée DRETTEP (Identique)
         const pathologiesDB = [
-            // ================= HÉMATOLOGIE =================
+            // HÉMATOLOGIE
             {
-                name: "Anémie (Syndrome Anémique)", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
+                name: "Anémie", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
                 drettep: {
                     def: "D/T<br>Diminution du taux d'hémoglobine sanguin (Hb < 13 g/dL chez l'homme, < 12 g/dL chez la femme).",
-                    etio: "E/P<br>Carentielle (Fer, B12, B9), Inflammatoire, Hémolytique (corpusculaire ou extra-corpusculaire), Centrale (aplasie, myélodysplasie).",
+                    etio: "E/P<br>Carentielle (Fer, B12, B9), Inflammatoire, Hémolytique, Centrale (aplasie, myélodysplasie).",
                     semio: "T : Tableau Clinique<br><br><strong>Signes fonctionnels :</strong> Asthénie, dyspnée d'effort, vertiges, acouphènes, céphalées, tachycardie.<br><strong>Signes physiques :</strong> Pâleur cutanéo-muqueuse, souffle systolique fonctionnel.",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>Hémogramme (NFS)</td><td>Confirmer la baisse de l'Hb, VGM, CCMH</td></tr><tr><td>Réticulocytes</td><td>Caractère régénératif (>120G/L) ou arégénératif</td></tr><tr><td>Bilan martial</td><td>Ferritine, Coefficient de saturation (si microcytose)</td></tr></table>",
+                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>NFS</td><td>Confirmer la baisse de l'Hb, VGM, CCMH</td></tr><tr><td>Réticulocytes</td><td>Caractère régénératif ou arégénératif</td></tr><tr><td>Bilan martial</td><td>Ferritine, Coefficient de saturation</td></tr></table>",
                     evo: "E : Évolution<br>Angor fonctionnel, décompensation cardiaque, hypoxie tissulaire chronique.",
-                    trait: "P : Prise en charge<br><br><strong>Traitement étiologique :</strong> Supplémentation en Fer/B12/B9, traitement de l'inflammation, etc.<br><strong>Symptomatique :</strong> Transfusion de CGR si mal tolérée ou Hb < 7 g/dL (ou 8-9 si ATCD cardios)."
+                    trait: "P : Prise en charge<br><br><strong>Traitement étiologique :</strong> Supplémentation en Fer/B12/B9, traitement de l'inflammation.<br><strong>Symptomatique :</strong> Transfusion de CGR si mal tolérée ou Hb < 7 g/dL."
                 }
             },
             {
                 name: "Leucémies Aiguës", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
                 drettep: {
                     def: "D/T<br>Prolifération clonale maligne de précurseurs hématopoïétiques (blastes) bloqués dans leur différenciation, envahissant la moelle osseuse.",
-                    etio: "E/P<br>Mutations génétiques acquises. Facteurs de risque: Radiations ionisantes, chimiothérapie antérieure, toxiques (benzène), trisomie 21.",
-                    semio: "T : Tableau Clinique<br><br><strong>Syndrome d'insuffisance médullaire :</strong> Anémie (pâleur, dyspnée), Neutropénie (infections, fièvre), Thrombopénie (syndrome hémorragique cutanéo-muqueux).<br><strong>Syndrome tumoral :</strong> Adénopathies, splénomégalie, hépatomégalie, hypertrophie gingivale (LAM4/5).",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>NFS + Frottis</td><td>Cytopénies, présence de blastes circulants</td></tr><tr><td>Myélogramme</td><td>Diagnostic positif (>20% de blastes dans la moelle)</td></tr><tr><td>Immunophénotypage</td><td>Typage LAL vs LAM</td></tr></table>",
-                    evo: "E : Évolution<br>Urgence thérapeutique. Risque de décès par choc septique, hémorragie massive ou leucostase. Rémission possible sous chimio.",
-                    trait: "P : Prise en charge<br><br><strong>Urgence :</strong> Antibiothérapie large spectre si fièvre, transfusions, prévention du syndrome de lyse tumorale (Hyperhydratation, Allopurinol).<br><strong>Fond :</strong> Chimiothérapie d'induction, consolidation, +/- greffe de cellules souches."
+                    etio: "E/P<br>Mutations génétiques acquises. FDR: Radiations ionisantes, chimiothérapie antérieure, toxiques (benzène), trisomie 21.",
+                    semio: "T : Tableau Clinique<br><br><strong>Syndrome d'insuffisance médullaire :</strong> Anémie, Neutropénie (infections), Thrombopénie (hémorragies).<br><strong>Syndrome tumoral :</strong> Adénopathies, splénomégalie, hépatomégalie.",
+                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>NFS + Frottis</td><td>Cytopénies, blastes circulants</td></tr><tr><td>Myélogramme</td><td>Diag. positif (>20% de blastes)</td></tr></table>",
+                    evo: "E : Évolution<br>Urgence thérapeutique. Risque de décès par choc septique, hémorragie massive ou leucostase.",
+                    trait: "P : Prise en charge<br><br><strong>Urgence :</strong> Antibiothérapie large spectre, transfusions, prévention syndrome de lyse.<br><strong>Fond :</strong> Chimiothérapie d'induction, consolidation, +/- greffe."
                 }
             },
             {
                 name: "Drépanocytose", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
                 drettep: {
                     def: "D/T<br>Hémoglobinopathie héréditaire (mutation HbS). Homozygote (SS) vs Hétérozygote (AS).",
-                    etio: "E/P<br>Substitution d'un acide aminé (Glu→Val) sur la chaîne bêta. Physiopath: Falciformation des hématies en hypoxie entraînant vaso-occlusion et hémolyse.",
+                    etio: "E/P<br>Substitution d'un acide aminé (Glu→Val) sur la chaîne bêta. Falciformation des hématies en hypoxie.",
                     semio: "T : Tableau Clinique<br><br><strong>Douleur osseuse (CVO) :</strong> Diag Diff : Ostéomyélite, Traumatisme.<br><strong>Ictère :</strong> Diag Diff : Hépatite virale, Lithiase biliaire.<br><strong>Splénomégalie (enfant) :</strong> Diag Diff : Paludisme, Leucémie.",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif/Justification</th><th>Valeurs Normales</th></tr><tr><td>Electrophorèse Hb</td><td>Identifier HbS (Certitude)</td><td>HbA1: 97% / HbS: 0%</td></tr><tr><td>Réticulocytes</td><td>Signer l'hémolyse</td><td>20-100 G/L</td></tr></table>",
-                    evo: "E : Évolution<br>AVC, Syndrome Thoracique Aigu (STA), Insuffisance rénale chronique, ostéonécrose aseptique, ulcères malléolaires.",
-                    trait: "P : Prise en charge (PNDS)<br><br><strong>Traitement de fond :</strong> Hydroxyurée (15-30 mg/kg/j).<br><strong>Prophylaxie :</strong> Pénicilline V jusqu'à 15-18 ans, Acide Folique.<br><strong>Urgences (CVO/STA) :</strong> Hydratation massive, Morphine, Transfusion/Échange transfusionnel."
+                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif/Justification</th><th>Valeurs Normales</th></tr><tr><td>Electrophorèse Hb</td><td>Identifier HbS</td><td>HbA1: 97% / HbS: 0%</td></tr><tr><td>Réticulocytes</td><td>Signer l'hémolyse</td><td>20-100 G/L</td></tr></table>",
+                    evo: "E : Évolution<br>AVC, Syndrome Thoracique Aigu (STA), Insuffisance rénale chronique, ostéonécrose.",
+                    trait: "P : Prise en charge<br><br><strong>Fond :</strong> Hydroxyurée.<br><strong>Prophylaxie :</strong> Pénicilline V, Acide Folique.<br><strong>Urgences (CVO/STA) :</strong> Hydratation, Morphine, Transfusion."
                 }
             },
-            
-            // ================= HÉPATO-GASTRO =================
+            // GASTRO
             {
                 name: "Gastro-entérite Aiguë", spec: "GASTRO", badgeClass: "bg-gastro",
                 drettep: {
-                    def: "D/T<br>Inflammation de la muqueuse gastrique et intestinale entraînant des diarrhées d'apparition brutale, souvent associées à des vomissements.",
-                    etio: "E/P<br>Virale (Norovirus, Rotavirus), Bactérienne (Salmonella, Shigella, Campylobacter), Parasitaire (Giardia).",
-                    semio: "T : Tableau Clinique<br>Diarrhée (aqueuse ou glairo-sanglante), vomissements, douleurs abdominales (crampes), fièvre, signes de déshydratation (pli cutané, tachycardie).",
-                    para: "E : Examens Paracliniques<br>Souvent clinique. Si signes de gravité ou persistance: Coproculture, EPS (Examen Parasitologique des Selles), Ionogramme sanguin (recherche de déshydratation/hypokaliémie).",
-                    evo: "E : Évolution<br>Guérison spontanée en quelques jours. Complication majeure: Déshydratation sévère, choc hypovolémique, syndrome hémolytique et urémique (SHU).",
-                    trait: "P : Prise en charge<br><strong>Réhydratation :</strong> SRO (Sels de Réhydratation Orale) ou IV si sévère.<br><strong>Symptomatique :</strong> Antidiarrhéiques (ex: Racécadotril), antispasmodiques.<br><strong>ATB :</strong> Seulement si germe entéro-invasif sévère (ex: Azithromycine)."
+                    def: "D/T<br>Inflammation de la muqueuse gastrique et intestinale entraînant des diarrhées d'apparition brutale.",
+                    etio: "E/P<br>Virale (Norovirus, Rotavirus), Bactérienne (Salmonella, Shigella), Parasitaire.",
+                    semio: "T : Tableau Clinique<br>Diarrhée, vomissements, douleurs abdominales, fièvre, signes de déshydratation.",
+                    para: "E : Examens Paracliniques<br>Souvent clinique. Si gravité: Coproculture, EPS, Ionogramme sanguin.",
+                    evo: "E : Évolution<br>Guérison spontanée en qqs jours. Complication: Déshydratation sévère, SHU.",
+                    trait: "P : Prise en charge<br><strong>Réhydratation :</strong> SRO ou IV.<br><strong>Symptomatique :</strong> Antidiarrhéiques.<br><strong>ATB :</strong> Seulement si germe invasif sévère."
                 }
             },
             {
                 name: "Hémorragies Digestives", spec: "GASTRO", badgeClass: "bg-gastro",
                 drettep: {
-                    def: "D/T<br>Extériorisation de sang provenant du tube digestif : Hématémèse (haute), Méléna (haute ou basse lente), Rectorragie (basse).",
-                    etio: "E/P<br><strong>Haute :</strong> Ulcère gastro-duodénal, Rupture de varices œsophagiennes (cirrhose), Mallory-Weiss.<br><strong>Basse :</strong> Diverticulose, Hémorroïdes, Cancers colorectaux, Angiodysplasies.",
-                    semio: "T : Tableau Clinique<br>Extériorisation de sang, signes de choc hémorragique (pâleur, sueurs, tachycardie, hypotension, marbrures).",
-                    para: "E : Examens Paracliniques<br>NFS, Groupe/Rhésus, RAI, Bilan d'hémostase. <strong>Endoscopie digestive haute (EOGD)</strong> en urgence (après stabilisation). Coloscopie si origine basse.",
-                    evo: "E : Évolution<br>Choc hypovolémique, anémie aiguë, récidive hémorragique, décès.",
-                    trait: "P : Prise en charge<br><strong>Urgence :</strong> 2 VVP de gros calibre, remplissage (Cristalloïdes), Transfusion si Hb < 7-8.<br><strong>Spécifique :</strong> IPP IV forte dose (si UGD), Vasoconstricteurs (Octréotide, Terlipressine si varices) + Hémostase endoscopique (clips, ligature)."
+                    def: "D/T<br>Extériorisation de sang provenant du tube digestif : Hématémèse, Méléna, Rectorragie.",
+                    etio: "E/P<br><strong>Haute :</strong> Ulcère, Rupture de varices œsophagiennes.<br><strong>Basse :</strong> Diverticulose, Hémorroïdes, Tumeurs.",
+                    semio: "T : Tableau Clinique<br>Extériorisation de sang, signes de choc hémorragique (pâleur, tachycardie, hypotension).",
+                    para: "E : Examens Paracliniques<br>NFS, Groupe/Rhésus, Hémostase. Endoscopie digestive haute (EOGD) en urgence. Coloscopie.",
+                    evo: "E : Évolution<br>Choc hypovolémique, anémie aiguë, décès.",
+                    trait: "P : Prise en charge<br><strong>Urgence :</strong> 2 VVP, remplissage, Transfusion.<br><strong>Spécifique :</strong> IPP IV, Vasoconstricteurs, Hémostase endoscopique."
                 }
             },
             {
                 name: "Hépatalgie & Hépatomégalie", spec: "GASTRO", badgeClass: "bg-gastro",
                 drettep: {
-                    def: "D/T<br>Hépatomégalie (flèche hépatique > 12 cm). Hépatalgie (douleur de l'hypocondre droit due à la mise en tension de la capsule de Glisson).",
-                    etio: "E/P<br><strong>Sensible :</strong> Foie cardiaque (IC droite), Hépatite aiguë (virale, toxique), Abcès hépatique.<br><strong>Non sensible :</strong> Stéatose, Cirrhose, Tumeurs (CHC, métastases), Maladies de surcharge.",
-                    semio: "T : Tableau Clinique<br><strong>Sensible :</strong> Douleur au bord inférieur des côtes, reflux hépato-jugulaire (si cardiaque), fièvre (si infectieux).<br><strong>Non sensible :</strong> Souvent de découverte fortuite, bord inférieur dur (cirrhose) ou nodulaire (tumeur).",
-                    para: "E : Examens Paracliniques<br>Échographie abdominale (1ère intention). Bilan hépatique complet (ASAT, ALAT, GGT, PAL, Bilirubine, TP). Scanner/IRM hépatique si suspicion tumorale.",
-                    evo: "E : Évolution<br>Dépend de l'étiologie. Insuffisance hépatocellulaire, Hypertension portale, évolution vers le carcinome hépatocellulaire.",
-                    trait: "P : Prise en charge<br>Ciblée sur la cause. Diurétiques si foie cardiaque. Sevrage alcoolique. Traitement antiviral si hépatite virale chronique."
+                    def: "D/T<br>Hépatomégalie (flèche hépatique > 12 cm). Hépatalgie (douleur de la capsule de Glisson).",
+                    etio: "E/P<br><strong>Sensible :</strong> Foie cardiaque, Hépatite aiguë, Abcès.<br><strong>Non sensible :</strong> Stéatose, Cirrhose, Tumeurs.",
+                    semio: "T : Tableau Clinique<br><strong>Sensible :</strong> Douleur hypocondre D, reflux hépato-jugulaire, fièvre.<br><strong>Non sensible :</strong> Fortuite, bord inférieur dur ou nodulaire.",
+                    para: "E : Examens Paracliniques<br>Échographie abdominale. Bilan hépatique (ASAT, ALAT, GGT, PAL, Bilirubine, TP). Scanner hépatique.",
+                    evo: "E : Évolution<br>Insuffisance hépatocellulaire, Hypertension portale, Carcinome hépatocellulaire.",
+                    trait: "P : Prise en charge<br>Ciblée sur la cause. Diurétiques (foie cardiaque), Sevrage alcool, Traitement antiviral."
                 }
             },
             {
                 name: "Ascite", spec: "GASTRO", badgeClass: "bg-gastro",
                 drettep: {
                     def: "D/T<br>Épanchement liquidien dans la cavité péritonéale.",
-                    etio: "E/P<br><strong>Transsudat (protides < 25g/L) :</strong> Cirrhose (80%), Insuffisance cardiaque droite, Syndrome néphrotique.<br><strong>Exsudat (protides > 25g/L) :</strong> Carcinose péritonéale, Tuberculose péritonéale, Pancréatite.",
-                    semio: "T : Tableau Clinique<br>Augmentation du volume de l'abdomen, matité déclive et mobile aux flancs, tympanisme péri-ombilical. Signe du glaçon (si hépatomégalie).",
-                    para: "E : Examens Paracliniques<br><strong>Ponction d'ascite exploratrice :</strong> Biochimie (Protides, gradient Albumine sérum-ascite), Cytologie, Bactériologie. Échographie abdominale.",
-                    evo: "E : Évolution<br>Infection du liquide d'ascite (urgence vitale), hernie ombilicale, dyspnée par compression diaphragmatique.",
-                    trait: "P : Prise en charge<br>Régime désodé strict. Diurétiques (Spironolactone +/- Furosémide). Ponctions évacuatrices compensées par albumine si > 4-5 Litres."
+                    etio: "E/P<br><strong>Transsudat :</strong> Cirrhose, IC droite, Syndrome néphrotique.<br><strong>Exsudat :</strong> Carcinose péritonéale, Tuberculose.",
+                    semio: "T : Tableau Clinique<br>Augmentation du volume de l'abdomen, matité déclive et mobile, tympanisme péri-ombilical.",
+                    para: "E : Examens Paracliniques<br><strong>Ponction exploratrice :</strong> Biochimie, Cytologie, Bactériologie. Échographie.",
+                    evo: "E : Évolution<br>Infection du liquide d'ascite, hernie ombilicale, dyspnée.",
+                    trait: "P : Prise en charge<br>Régime désodé. Diurétiques. Ponctions évacuatrices compensées par albumine."
                 }
             },
             {
                 name: "Gastrite", spec: "GASTRO", badgeClass: "bg-gastro",
                 drettep: {
-                    def: "D/T<br>Inflammation aiguë ou chronique de la muqueuse gastrique, documentée histologiquement.",
-                    etio: "E/P<br>Infection à Helicobacter Pylori (AINS, Auto-immune/Maladie de Biermer).",
+                    def: "D/T<br>Inflammation aiguë ou chronique de la muqueuse gastrique.",
+                    etio: "E/P<br>Infection à Helicobacter Pylori, AINS, Auto-immune.",
                     semio: "T : Tableau Clinique<br>Souvent asymptomatique. Parfois dyspepsie, épigastralgies, nausées.",
-                    para: "E : Examens Paracliniques<br>Endoscopie œso-gastro-duodénale (EOGD) avec biopsies (antre, fundus, angle). Test rapide à l'uréase ou PCR H. Pylori.",
-                    evo: "E : Évolution<br>Ulcère gastro-duodénal, Atrophie muqueuse, Métaplasie intestinale, Adénocarcinome gastrique (cascade de Pelayo Correa).",
-                    trait: "P : Prise en charge<br>Éradication d'H. Pylori (Quadrithérapie bismuthée ou concomitante). IPP (Inhibiteurs de la Pompe à Protons) en cures courtes pour les symptômes."
+                    para: "E : Examens Paracliniques<br>EOGD avec biopsies. Test rapide à l'uréase.",
+                    evo: "E : Évolution<br>Ulcère gastro-duodénal, Atrophie, Métaplasie, Adénocarcinome gastrique.",
+                    trait: "P : Prise en charge<br>Éradication H. Pylori (ATB). IPP en cures courtes."
                 }
             },
-
-            // ================= PNEUMOLOGIE =================
+            // PNEUMO
             {
                 name: "Embolie Pulmonaire", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
                 drettep: {
-                    def: "D/T<br>Obstruction brutale d'une artère pulmonaire ou de ses branches par un thrombus (caillot), souvent issu d'une TVP (Thrombose Veineuse Profonde).",
-                    etio: "E/P<br>Triade de Virchow : Stase veineuse, Lésion endothéliale, Hypercoagulabilité (Cancers, alitement, chirurgie récente, pilule oestroprogestative).",
-                    semio: "T : Tableau Clinique<br>Dyspnée brutale, douleur thoracique basi-thoracique, toux, hémoptysie tardive, tachycardie, signes de TVP au mollet. Possibles signes de cœur pulmonaire aigu (turgescence jugulaire).",
-                    para: "E : Examens Paracliniques<br>D-Dimères (valeur d'exclusion si < seuil). <strong>Angioscanner thoracique (Gold Standard).</strong> ECG (S1Q3, tachycardie). Gazométrie (Hypoxémie, hypocapnie). Écho-Doppler veineux MI.",
-                    evo: "E : Évolution<br>Choc cardiogénique (EP massive), Cœur pulmonaire chronique post-embolique, récidive, décès.",
-                    trait: "P : Prise en charge<br><strong>Anticoagulation curative :</strong> AOD (Apixaban, Rivaroxaban) ou HBPM d'emblée, pendant 3 à 6 mois minimum. <strong>Si gravité (choc) :</strong> Thrombolyse ou embolectomie."
+                    def: "D/T<br>Obstruction brutale d'une artère pulmonaire par un thrombus (souvent TVP).",
+                    etio: "E/P<br>Triade de Virchow : Stase, Lésion endothéliale, Hypercoagulabilité.",
+                    semio: "T : Tableau Clinique<br>Dyspnée brutale, douleur basi-thoracique, toux, tachycardie, signes de TVP.",
+                    para: "E : Examens Paracliniques<br>D-Dimères. <strong>Angioscanner thoracique (Gold Standard).</strong> ECG (S1Q3). Gazométrie.",
+                    evo: "E : Évolution<br>Choc cardiogénique, Cœur pulmonaire chronique, décès.",
+                    trait: "P : Prise en charge<br><strong>Anticoagulation :</strong> AOD ou HBPM (3-6 mois). <strong>Si gravité :</strong> Thrombolyse."
                 }
             },
             {
                 name: "Tuberculose (TBC)", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
                 drettep: {
-                    def: "D/T<br>Infection contagieuse due au Mycobacterium tuberculosis (Bacille de Koch), atteignant principalement les poumons.",
-                    etio: "E/P<br>Transmission aérienne par gouttelettes. Formation de granulomes épithélioïdes et gigantocellulaires avec nécrose caséeuse.",
-                    semio: "T : Tableau Clinique<br>Toux chronique (>3 semaines), hémoptysie, fièvre vespérale (soir), sueurs nocturnes profuses, altération de l'état général (AEG) avec amaigrissement.",
-                    para: "E : Examens Paracliniques<br>Radiographie tho (Cavernes, infiltrats apicaux). <strong>Recherche de BK dans les crachats :</strong> Examen direct (Ziehl-Neelsen), Culture (Löwenstein-Jensen), PCR (GeneXpert).",
-                    evo: "E : Évolution<br>Dissémination miliaire, atteinte extra-pulmonaire (osseuse, méningée), insuffisance respiratoire séquellaire. Guérison sous traitement bien conduit.",
-                    trait: "P : Prise en charge<br>Isolement respiratoire. Quadrithérapie antibacillaire pendant 2 mois (Rifampicine, Isoniazide, Pyrazinamide, Éthambutol), puis Bithérapie (RI) pendant 4 mois. Déclaration obligatoire."
+                    def: "D/T<br>Infection contagieuse due au Mycobacterium tuberculosis (Bacille de Koch).",
+                    etio: "E/P<br>Transmission aérienne. Formation de granulomes avec nécrose caséeuse.",
+                    semio: "T : Tableau Clinique<br>Toux chronique, hémoptysie, fièvre vespérale, sueurs nocturnes, AEG.",
+                    para: "E : Examens Paracliniques<br>Radio thorax. Recherche BK crachats : Examen direct, Culture, PCR.",
+                    evo: "E : Évolution<br>Dissémination miliaire, atteinte extra-pulmonaire. Guérison sous traitement.",
+                    trait: "P : Prise en charge<br>Isolement. Quadrithérapie (2 mois) puis Bithérapie (4 mois). Déclaration obligatoire."
                 }
             },
             {
                 name: "Asthme", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
                 drettep: {
-                    def: "D/T<br>Maladie inflammatoire chronique des voies aériennes, caractérisée par une hyperréactivité bronchique et une obstruction variable et réversible.",
-                    etio: "E/P<br>Atopie (allergies), prédisposition génétique, exposition environnementale (acariens, pollens, tabac, virus).",
-                    semio: "T : Tableau Clinique<br>Épisodes de dyspnée expiratoire sifflante (souvent nocturne), toux sèche, oppression thoracique. Sibilants à l'auscultation.",
-                    para: "E : Examens Paracliniques<br>EFR (Exploration Fonctionnelle Respiratoire) : TVO (Trouble Ventilatoire Obstructif) réversible aux bronchodilatateurs (augmentation du VEMS > 12% et 200ml).",
-                    evo: "E : Évolution<br>Crises d'asthme, Asthme aigu grave (urgence), remodelage bronchique à long terme.",
-                    trait: "P : Prise en charge<br><strong>Traitement de fond :</strong> Corticoïdes inhalés (CSI) + Bronchodilatateurs de longue durée d'action (LABA).<br><strong>Crise :</strong> Bronchodilatateur de courte durée d'action (SABA type Salbutamol)."
+                    def: "D/T<br>Maladie inflammatoire chronique avec hyperréactivité bronchique et obstruction réversible.",
+                    etio: "E/P<br>Atopie, génétique, allergènes environnementaux, tabac, virus.",
+                    semio: "T : Tableau Clinique<br>Dyspnée expiratoire sifflante, toux sèche. Sibilants à l'auscultation.",
+                    para: "E : Examens Paracliniques<br>EFR : Trouble Ventilatoire Obstructif réversible aux bronchodilatateurs.",
+                    evo: "E : Évolution<br>Crises, Asthme aigu grave, remodelage bronchique.",
+                    trait: "P : Prise en charge<br><strong>Fond :</strong> Corticoïdes inhalés + LABA.<br><strong>Crise :</strong> Bronchodilatateur courte durée (Salbutamol)."
                 }
             },
             {
-                name: "OAP (Œdème Aigu du Poumon)", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo", // Often managed jointly cardio/pneumo
+                name: "OAP", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
                 drettep: {
-                    def: "D/T<br>Inondation alvéolaire brutale par transsudation de plasma suite à une élévation de la pression capillaire pulmonaire.",
-                    etio: "E/P<br>Insuffisance cardiaque gauche aiguë, poussée hypertensive, trouble du rythme, IDM.",
-                    semio: "T : Tableau Clinique<br>Dyspnée brutale, angoisse, orthopnée (assis au bord du lit), toux avec expectorations mousseuses saumonées. Râles crépitants aux bases remontant en marée montante.",
-                    para: "E : Examens Paracliniques<br>Radio thorax : Opacités alvéolaires en ailes de papillon, lignes de Kerley B. BNP/NT-proBNP très élevés. ECG, Échographie cardiaque.",
-                    evo: "E : Évolution<br>Urgence vitale absolue. Risque d'asphyxie et d'arrêt cardio-respiratoire.",
-                    trait: "P : Prise en charge<br>Position assise, Oxygénothérapie. Diurétiques de l'anse IV (Furosémide). Dérivés nitrés IV (si TA conservée). VNI (Ventilation Non Invasive) en CPAP."
+                    def: "D/T<br>Inondation alvéolaire brutale par transsudation de plasma.",
+                    etio: "E/P<br>Insuffisance cardiaque gauche aiguë, poussée hypertensive, IDM.",
+                    semio: "T : Tableau Clinique<br>Dyspnée brutale, orthopnée, crépitants en marée montante.",
+                    para: "E : Examens Paracliniques<br>Radio thorax (ailes de papillon). BNP/NT-proBNP élevés. ECG, Écho cœur.",
+                    evo: "E : Évolution<br>Urgence vitale absolue. Risque d'asphyxie.",
+                    trait: "P : Prise en charge<br>Oxygénothérapie, Diurétiques IV (Furosémide), Dérivés nitrés IV, VNI."
                 }
             },
-
-            // ================= CARDIOLOGIE =================
+            // CARDIO
             {
-                name: "HTA (Hypertension Artérielle)", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
+                name: "HTA", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
                 drettep: {
-                    def: "D/T<br>Pression artérielle systolique ≥ 140 mmHg et/ou diastolique ≥ 90 mmHg mesurée au cabinet médical.",
-                    etio: "E/P<br>Essentielle (90%) liée à l'âge, surpoids, sédentarité, sel. Secondaire (10%) : Rénovasculaire, Hyperaldostéronisme, Phéochromocytome.",
-                    semio: "T : Tableau Clinique<br>Maladie silencieuse. Parfois: céphalées occipitales matinales, mouches volantes (myodésopsies), acouphènes, épistaxis.",
-                    para: "E : Examens Paracliniques<br>MAPA ou automesure pour confirmer. Bilan OMS: Glycémie, Bilan lipidique, Créatininémie + DFG, Bandelette urinaire, ECG de repos.",
-                    evo: "E : Évolution<br>Complications athéromateuses (AVC, IDM, AOMI), Insuffisance cardiaque, Insuffisance rénale chronique, Rétinopathie hypertensive.",
-                    trait: "P : Prise en charge<br><strong>RHD :</strong> Régime peu salé, perte de poids, sport. <strong>Médicaments :</strong> IEC / ARA2, Inhibiteurs calciques, Diurétiques thiazidiques (monothérapie ou associations)."
-                }
-            },
-            {
-                name: "Insuffisance Cardiaque (IC)", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
-                drettep: {
-                    def: "D/T<br>Incapacité du cœur à assurer un débit sanguin suffisant pour les besoins métaboliques de l'organisme, ou ne pouvant le faire qu'au prix de pressions de remplissage élevées.",
-                    etio: "E/P<br>Cardiopathie ischémique, HTA, Valvulopathies, Cardiomyopathies dilatées.",
-                    semio: "T : Tableau Clinique<br><strong>Gauche :</strong> Dyspnée d'effort, orthopnée, crépitants. <strong>Droite :</strong> Œdèmes des membres inférieurs, turgescence jugulaire, hépatomégalie (reflux).",
-                    para: "E : Examens Paracliniques<br>Échographie Trans-Thoracique (ETT) pour évaluer la FEVG (altérée ou préservée). Dosage du BNP / NT-proBNP. ECG. Radiographie thoracique.",
-                    evo: "E : Évolution<br>Poussées d'insuffisance cardiaque aiguë (OAP), troubles du rythme, insuffisance rénale, cachexie cardiaque, décès.",
-                    trait: "P : Prise en charge<br>Les 4 piliers (FEVG altérée) : IEC/ARA2 (ou ARNI/Entresto), Bêtabloquants, Antagonistes des minéralocorticoïdes (Spironolactone), Gliflozines (iSGLT2). Diurétiques pour la congestion."
+                    def: "D/T<br>Pression artérielle systolique ≥ 140 mmHg et/ou diastolique ≥ 90 mmHg.",
+                    etio: "E/P<br>Essentielle (90%). Secondaire (10%) : Rénovasculaire, Hyperaldostéronisme.",
+                    semio: "T : Tableau Clinique<br>Silencieuse. Parfois: céphalées occipitales, mouches volantes, acouphènes.",
+                    para: "E : Examens Paracliniques<br>MAPA. Bilan OMS: Glycémie, Bilan lipidique, Créatininémie, ECG.",
+                    evo: "E : Évolution<br>Complications athéromateuses, Insuffisance cardiaque, Insuffisance rénale.",
+                    trait: "P : Prise en charge<br><strong>RHD :</strong> Régime peu salé, sport. <strong>Médicaments :</strong> IEC / ARA2, Inhibiteurs calciques, Diurétiques."
                 }
             },
             {
-                name: "Défaillance Cardiaque Gauche (DCG)", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
+                name: "Insuffisance Cardiaque", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
                 drettep: {
-                    def: "D/T<br>Insuffisance ventriculaire gauche isolée ou prédominante entraînant une stase veino-capillaire pulmonaire.",
-                    etio: "E/P<br>Infarctus du myocarde massif, insuffisance mitrale ou aortique aiguë, HTA maligne.",
-                    semio: "T : Tableau Clinique<br>Orthopnée sévère, asthme cardiaque (sibilants), toux à l'effort, fatigue musculaire, extrémités froides et pincées (bas débit).",
-                    para: "E : Examens Paracliniques<br>Écho-Doppler cardiaque (FEVG effondrée, dilatation VG). Cathétérisme droit (élévation de la Pression Capillaire Pulmonaire).",
-                    evo: "E : Évolution<br>Choc cardiogénique, OAP fulminant. Évolution vers l'IC globale (retentissement droit).",
-                    trait: "P : Prise en charge<br>Traitement de la cause (revascularisation, chirurgie valvulaire). Soutien inotrope (Dobutamine) si choc. Assistance circulatoire si réfractaire."
+                    def: "D/T<br>Incapacité du cœur à assurer un débit sanguin suffisant.",
+                    etio: "E/P<br>Cardiopathie ischémique, HTA, Valvulopathies.",
+                    semio: "T : Tableau Clinique<br><strong>Gauche :</strong> Dyspnée, orthopnée, crépitants. <strong>Droite :</strong> Œdèmes, turgescence jugulaire, hépatomégalie.",
+                    para: "E : Examens Paracliniques<br>Échographie Trans-Thoracique (FEVG). Dosage BNP. ECG. Radio thoracique.",
+                    evo: "E : Évolution<br>Poussées aiguës (OAP), troubles du rythme, insuffisance rénale.",
+                    trait: "P : Prise en charge<br>IEC/ARA2, Bêtabloquants, Spironolactone, Gliflozines. Diurétiques."
                 }
             },
-
-            // ================= PIT (Infectiologie) =================
+            {
+                name: "Défaillance Cardiaque Gauche", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
+                drettep: {
+                    def: "D/T<br>Insuffisance ventriculaire gauche isolée ou prédominante entraînant une stase pulmonaire.",
+                    etio: "E/P<br>Infarctus du myocarde massif, insuffisance valvulaire aiguë.",
+                    semio: "T : Tableau Clinique<br>Orthopnée sévère, asthme cardiaque, toux à l'effort, extrémités froides (bas débit).",
+                    para: "E : Examens Paracliniques<br>Écho-Doppler cardiaque. Cathétérisme droit.",
+                    evo: "E : Évolution<br>Choc cardiogénique, OAP fulminant.",
+                    trait: "P : Prise en charge<br>Traitement de la cause. Soutien inotrope (Dobutamine). Assistance circulatoire."
+                }
+            },
+            // PIT
             {
                 name: "VIH", spec: "PIT", badgeClass: "bg-pit",
                 drettep: {
-                    def: "D/T<br>Infection par le Virus de l'Immunodéficience Humaine (Rétrovirus), détruisant progressivement les lymphocytes T CD4+.",
-                    etio: "E/P<br>Transmission sexuelle, sanguine ou materno-fœtale. Le virus infecte les cellules CD4 via le récepteur et des corécepteurs (CCR5/CXCR4).",
-                    semio: "T : Tableau Clinique<br>Primo-infection: Syndrome pseudo-grippal. Phase chronique: Asymptomatique. SIDA: Apparition d'infections opportunistes (Pneumocystose, Toxoplasmose) et tumeurs (Kaposi, Lymphomes).",
-                    para: "E : Examens Paracliniques<br>Sérologie VIH (ELISA de 4ème génération). Confirmation par Western Blot. Évaluation : Dosage des Lymphocytes T CD4, Charge Virale VIH (ARN).",
-                    evo: "E : Évolution<br>Sans traitement: Évolution inéluctable vers le stade SIDA et décès. Sous traitement: Espérance de vie superposable à la population générale.",
-                    trait: "P : Prise en charge<br>Trithérapie antirétrovirale à vie (ex: 2 INTI + 1 INI). Prophylaxie des infections opportunistes si CD4 < 200/mm3 (Cotrimoxazole)."
+                    def: "D/T<br>Infection par le Rétrovirus détruisant les lymphocytes T CD4+.",
+                    etio: "E/P<br>Transmission sexuelle, sanguine ou materno-fœtale.",
+                    semio: "T : Tableau Clinique<br>Primo-infection. Phase chronique asymptomatique. SIDA: Infections opportunistes.",
+                    para: "E : Examens Paracliniques<br>Sérologie VIH (ELISA). Western Blot. Dosage CD4, Charge Virale.",
+                    evo: "E : Évolution<br>Sans traitement: SIDA et décès. Sous traitement: Espérance de vie normale.",
+                    trait: "P : Prise en charge<br>Trithérapie antirétrovirale à vie. Prophylaxie si CD4 < 200/mm3."
                 }
             },
             {
                 name: "Sepsis", spec: "PIT", badgeClass: "bg-pit",
                 drettep: {
-                    def: "D/T<br>Dysfonction d'organe menaçant le pronostic vital, causée par une réponse dysrégulée de l'hôte à une infection (Score SOFA ≥ 2).",
-                    etio: "E/P<br>Infection bactérienne (Pulmonaire, urinaire, digestive, cathéter), plus rarement virale ou fongique. Libération massive de cytokines pro-inflammatoires.",
-                    semio: "T : Tableau Clinique<br>Fièvre ou hypothermie, frissons, tachycardie, polypnée. Signes de dysfonction (Score qSOFA) : PAS ≤ 100 mmHg, FR ≥ 22/min, Altération de la conscience (Glasgow < 15). Marbrures cutanées.",
-                    para: "E : Examens Paracliniques<br>Hémocultures (avant ATB si possible). Lactates sanguins élevés (>2 mmol/L = hypoxie tissulaire). Bilan infectieux ciblé (ECBU, Radio Thorax, PL).",
-                    evo: "E : Évolution<br>Choc septique (nécessité de vasopresseurs pour maintenir PAM ≥ 65 mmHg et lactates > 2 malgré remplissage). Défaillance multi-viscérale, décès élevé.",
-                    trait: "P : Prise en charge<br>URGENCE. <strong>Dans la 1ère heure :</strong> Antibiothérapie IV probabiliste large spectre, remplissage vasculaire (Cristalloïdes 30 ml/kg), introduction de Noradrénaline si PAM < 65. Contrôle de la source."
+                    def: "D/T<br>Dysfonction d'organe due à une réponse dysrégulée à une infection (SOFA ≥ 2).",
+                    etio: "E/P<br>Infection bactérienne (Pulmonaire, urinaire, etc.). Libération massive de cytokines.",
+                    semio: "T : Tableau Clinique<br>Fièvre/hypothermie, tachycardie, polypnée. Score qSOFA: PAS ≤ 100, FR ≥ 22, Glasgow < 15.",
+                    para: "E : Examens Paracliniques<br>Hémocultures, Lactates sanguins (>2). Bilan infectieux ciblé.",
+                    evo: "E : Évolution<br>Choc septique, Défaillance multi-viscérale, décès.",
+                    trait: "P : Prise en charge<br><strong>Urgence (1h) :</strong> Antibiothérapie IV probabiliste, remplissage, Noradrénaline (si PAM < 65)."
                 }
             },
-
-            // ================= NÉPHROLOGIE =================
+            // NEPHROLOGIE
             {
-                name: "Insuffisance Rénale Aiguë (IRA)", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
+                name: "Insuffisance Rénale Aiguë", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
                 drettep: {
-                    def: "D/T<br>Baisse brutale (heures/jours) de la filtration glomérulaire, avec rétention des déchets azotés.",
-                    etio: "E/P<br>Pré-rénale (Fonctionnelle: hypovolémie, déshydratation). Rénale (Parenchymateuse: NTA ischémique, toxique). Post-rénale (Obstructive: lithiase, prostate).",
-                    semio: "T : Tableau Clinique<br>Oligo-anurie ou diurèse conservée. Signes de l'étiologie (déshydratation, globe vésical).",
-                    para: "E : Examens Paracliniques<br>Créatininémie, Urée, Ionogramme sanguin et urinaire. <strong>Échographie des voies urinaires</strong> (éliminer un obstacle).",
-                    evo: "E : Évolution<br>Hyperkaliémie menaçante, OAP de surcharge, acidose métabolique. Réversibilité fréquente si prise en charge précoce.",
-                    trait: "P : Prise en charge<br>Traiter la cause (Remplissage si fonctionnelle, levée d'obstacle par sonde si obstructive). Épuration extra-rénale (Dialyse) en urgence si complications menaçantes."
+                    def: "D/T<br>Baisse brutale de la filtration glomérulaire, avec rétention des déchets azotés.",
+                    etio: "E/P<br>Pré-rénale (hypovolémie). Rénale (NTA). Post-rénale (obstacle).",
+                    semio: "T : Tableau Clinique<br>Oligo-anurie ou diurèse conservée. Signes de l'étiologie.",
+                    para: "E : Examens Paracliniques<br>Créatininémie, Urée, Ionogramme. <strong>Échographie des voies urinaires</strong>.",
+                    evo: "E : Évolution<br>Hyperkaliémie menaçante, OAP de surcharge, acidose métabolique.",
+                    trait: "P : Prise en charge<br>Traiter la cause. Épuration extra-rénale (Dialyse) en urgence si complications."
                 }
             },
             {
-                name: "Maladie Rénale Chronique (MRC)", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
+                name: "Maladie Rénale Chronique", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
                 drettep: {
-                    def: "D/T<br>Diminution irréversible du DFG < 60 ml/min/1.73m² ou marqueur d'atteinte rénale (protéinurie) persistant plus de 3 mois.",
-                    etio: "E/P<br>Néphropathie diabétique (1ère cause), Néphrosclérose hypertensive, Glomérulonéphrites chroniques, Polykystose rénale.",
-                    semio: "T : Tableau Clinique<br>Longtemps asymptomatique. Stade avancé : Asthénie (anémie), œdèmes, crampes, prurit, hypertension artérielle sévère.",
-                    para: "E : Examens Paracliniques<br>Estimation du DFG (CKD-EPI). Rapport Albuminurie/Créatininurie. Échographie rénale (reins de petite taille, différenciation cortico-médullaire perdue). Bilan phosphocalcique.",
-                    evo: "E : Évolution<br>Progression vers le stade terminal (Stade 5 : DFG < 15). Complications cardiovasculaires majeures, ostéodystrophie rénale.",
-                    trait: "P : Prise en charge<br>Néphroprotection : Contrôle PA, IEC/ARA2 (pour baisser la protéinurie), contrôle glycémique. Préparation à la suppléance (Dialyse ou Greffe) au stade 4-5."
+                    def: "D/T<br>Diminution irréversible du DFG < 60 ml/min/1.73m² persistant plus de 3 mois.",
+                    etio: "E/P<br>Néphropathie diabétique, Néphrosclérose hypertensive, Glomérulonéphrites.",
+                    semio: "T : Tableau Clinique<br>Longtemps asymptomatique. Asthénie, œdèmes, crampes, HTA.",
+                    para: "E : Examens Paracliniques<br>DFG (CKD-EPI). Rapport Albuminurie/Créatininurie. Échographie rénale.",
+                    evo: "E : Évolution<br>Progression vers le stade terminal. Complications cardiovasculaires.",
+                    trait: "P : Prise en charge<br>Néphroprotection : IEC/ARA2. Préparation à la suppléance (Dialyse/Greffe)."
                 }
             },
-
-            // ================= NEUROLOGIE =================
+            // NEUROLOGIE
             {
-                name: "AVC (Accident Vasculaire Cérébral)", spec: "NEUROLOGY", badgeClass: "bg-neuro",
+                name: "AVC", spec: "NEUROLOGY", badgeClass: "bg-neuro",
                 drettep: {
-                    def: "D/T<br>Déficit neurologique soudain d'origine vasculaire (Ischémique dans 80% des cas, Hémorragique 20%).",
-                    etio: "E/P<br><strong>Ischémique :</strong> Athérosclérose, Cardioembolie (FA), Maladie des petites artères (lacunes).<br><strong>Hémorragique :</strong> HTA chronique, Rupture de malformation artério-veineuse ou d'anévrisme.",
-                    semio: "T : Tableau Clinique<br>Hémiplégie, aphasie, hémianopsie latérale homonyme, paralysie faciale centrale, troubles de l'équilibre, apparition très brutale.",
-                    para: "E : Examens Paracliniques<br><strong>IRM cérébrale en urgence</strong> (séquences Diffusion, FLAIR, T2*, TOF). À défaut, Scanner cérébral sans injection. Bilan d'étiologie (Holter, Echo-Doppler TSA).",
-                    evo: "E : Évolution<br>Risque vital initial (engagement, HTIC). Séquelles neurologiques (handicap moteur/cognitif), spasticité, dépression post-AVC.",
-                    trait: "P : Prise en charge<br>Urgence vitale (Alerte thrombolyse). Unité Neuro-Vasculaire. <br>Ischémique : Thrombolyse IV (si < 4h30) et/ou Thrombectomie mécanique. Aspirine.<br>Prévention secondaire stricte."
+                    def: "D/T<br>Déficit neurologique soudain d'origine vasculaire (Ischémique 80%, Hémorragique 20%).",
+                    etio: "E/P<br>Ischémique : Athérosclérose, Cardioembolie. Hémorragique : HTA, Malformation.",
+                    semio: "T : Tableau Clinique<br>Hémiplégie, aphasie, hémianopsie, paralysie faciale centrale.",
+                    para: "E : Examens Paracliniques<br><strong>IRM cérébrale en urgence.</strong> Bilan d'étiologie (Holter, Echo TSA).",
+                    evo: "E : Évolution<br>Risque vital (HTIC). Séquelles neurologiques (handicap, spasticité).",
+                    trait: "P : Prise en charge<br>Urgence (Alerte thrombolyse). Unité Neuro-Vasculaire. Thrombolyse IV / Thrombectomie."
                 }
             },
             {
                 name: "Coma Fébrile", spec: "NEUROLOGY", badgeClass: "bg-neuro",
                 drettep: {
-                    def: "D/T<br>Altération profonde de l'état de conscience (Glasgow < 8) associée à une hyperthermie (T° > 38°C).",
-                    etio: "E/P<br>Méningite purulente, Méningo-encéphalite herpétique, Neuropaludisme, Abcès cérébral, Choc septique avec encéphalopathie.",
-                    semio: "T : Tableau Clinique<br>Troubles de la vigilance, fièvre. Syndrome méningé (raideur de nuque, photophobie). Signes de localisation neurologique ou crises d'épilepsie.",
-                    para: "E : Examens Paracliniques<br>Ponction Lombaire (après scanner cérébral si signes de localisation). Hémocultures, Frottis/Goutte épaisse. Scanner/IRM cérébrale.",
-                    evo: "E : Évolution<br>Mortalité très élevée si retard de prise en charge. Séquelles neurologiques lourdes (épilepsie, troubles cognitifs).",
-                    trait: "P : Prise en charge<br>Réanimation (Intubation si Glasgow ≤ 8). <strong>Antibiothérapie / Antiviral probabiliste en urgence absolue</strong> (C3G + Aciclovir IV). Traitement anti-œdémateux."
+                    def: "D/T<br>Altération profonde de la conscience (Glasgow < 8) + hyperthermie (T° > 38°C).",
+                    etio: "E/P<br>Méningite, Méningo-encéphalite herpétique, Neuropaludisme, Abcès.",
+                    semio: "T : Tableau Clinique<br>Troubles de la vigilance, fièvre. Syndrome méningé, Signes de localisation.",
+                    para: "E : Examens Paracliniques<br>Ponction Lombaire. Hémocultures, Frottis/Goutte épaisse. Scanner/IRM.",
+                    evo: "E : Évolution<br>Mortalité très élevée si retard. Séquelles neurologiques lourdes.",
+                    trait: "P : Prise en charge<br>Réanimation. <strong>Antibiothérapie / Antiviral probabiliste en urgence absolue.</strong>"
                 }
             },
             {
                 name: "Coma Non Fébrile", spec: "NEUROLOGY", badgeClass: "bg-neuro",
                 drettep: {
-                    def: "D/T<br>Altération de l'état de conscience non accompagnée de contexte infectieux/fébrile.",
-                    etio: "E/P<br>Toxique (Alcool, benzodiazépines, opiacés, CO), Métabolique (Hypoglycémie, hyponatrémie sévère, encéphalopathie hépatique/urémique), Traumatique (HSD, HED), Vasculaire (AVC massif, Hémorragie méningée), Épileptique (état de mal non convulsif).",
-                    semio: "T : Tableau Clinique<br>Absence de réponse aux ordres simples, pas d'ouverture des yeux. Examen pupillaire crucial (myosis serré = opiacés ; mydriase unilatérale = engagement).",
-                    para: "E : Examens Paracliniques<br>Glycémie capillaire immédiate ! Bilan toxico sang et urines, Gazométrie (CO), Ionogramme, Scanner cérébral sans injection.",
-                    evo: "E : Évolution<br>Dépend fortement de l'étiologie. Risque d'inhalation bronchique, d'escarres et d'anoxie cérébrale prolongée.",
-                    trait: "P : Prise en charge<br>Score de Glasgow, Protection des voies aériennes (PLS, Intubation). Antidotes (Naloxone pour opiacés, Flumazénil pour BZD, Resucrage pour hypoglycémie)."
+                    def: "D/T<br>Altération de la conscience non accompagnée de contexte infectieux.",
+                    etio: "E/P<br>Toxique, Métabolique (Hypoglycémie), Traumatique, Vasculaire, Épileptique.",
+                    semio: "T : Tableau Clinique<br>Absence de réponse aux ordres. Examen pupillaire (myosis = opiacés ; mydriase = engagement).",
+                    para: "E : Examens Paracliniques<br>Glycémie capillaire immédiate ! Bilan toxico, Scanner cérébral sans injection.",
+                    evo: "E : Évolution<br>Dépend de l'étiologie. Risque d'inhalation bronchique et d'anoxie.",
+                    trait: "P : Prise en charge<br>Protection des voies aériennes. Antidotes (Naloxone, Resucrage)."
                 }
             }
         ];
@@ -653,7 +800,7 @@
             tr.innerHTML = `
                 <td style="font-weight: 500;">${path.name}</td>
                 <td><span class="badge ${path.badgeClass}">${path.spec}</span></td>
-                <td style="color: var(--text-gray);">COMPLET (DRETTEP)</td>
+                <td style="color: var(--text-gray); display:none;">COMPLET</td>
                 <td>
                     <button class="btn-visualiser" onclick="openModal(${index})">Visualiser</button>
                     <button class="btn-delete"><i class="fas fa-trash"></i></button>
@@ -662,7 +809,6 @@
             tbody.appendChild(tr);
         });
 
-        // Mise à jour du compteur
         document.getElementById("total-path").innerText = pathologiesDB.length;
 
         // Logique de la Modal
@@ -673,25 +819,25 @@
             document.getElementById("m-spec").innerText = currentPathology.spec;
             document.getElementById("m-title").innerText = currentPathology.name;
             
-            // Afficher le premier tab par défaut (Définition)
+            // Afficher le premier tab par défaut
             const firstTab = document.querySelector(".drettep-tab");
             showTab('def', firstTab);
 
             document.getElementById("modal").style.display = "flex";
+            document.body.style.overflow = "hidden"; // Empêcher le scroll du body sur mobile
         }
 
         function closeModal() {
             document.getElementById("modal").style.display = "none";
+            document.body.style.overflow = "auto";
         }
 
         function showTab(tabKey, element) {
-            // Gérer la classe active sur la sidebar
             document.querySelectorAll(".drettep-tab").forEach(tab => {
                 tab.classList.remove("active");
             });
             element.classList.add("active");
 
-            // Mettre à jour le contenu
             if (currentPathology) {
                 document.getElementById("m-content").innerHTML = currentPathology.drettep[tabKey];
             }
