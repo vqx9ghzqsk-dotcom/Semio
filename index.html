@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SémioExpert - Tableau de Bord</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        /* Custom scrollbar pour le tableau */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 10px;
+        }
+        
+        /* Styles des onglets actifs/inactifs de la modale */
+        .tab-btn.active {
+            border-left: 4px solid #14b8a6; /* Teal-500 */
+            color: #14b8a6;
+            background-color: #f0fdfa; /* Teal-50 */
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden text-slate-800">
+
+    <aside class="w-64 bg-[#0f172a] text-white flex flex-col justify-between h-full">
+        <div>
+            <div class="flex items-center gap-3 px-6 py-8">
+                <svg class="w-8 h-8 text-teal-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.027 1.028a4 4 0 00-2.171.102l-.47.156a4 4 0 01-2.53 0l-.563-.187a1.993 1.993 0 00-.114-.035l1.063-1.063A3 3 0 009 8.172z" clip-rule="evenodd"></path></svg>
+                <h1 class="text-xl font-bold tracking-wide">Sémio<span class="text-teal-500">Expert</span></h1>
+            </div>
+            
+            <nav class="flex flex-col gap-2 px-4">
+                <a href="#" class="flex items-center gap-3 px-4 py-3 bg-teal-500/20 text-teal-400 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    <span class="font-medium text-sm">Tableau de Bord</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                    <span class="font-medium text-sm">Base de Données</span>
+                </a>
+                <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
+                    <span class="font-medium text-sm">Méthode DRETTEP</span>
+                </a>
+            </nav>
+        </div>
+        
+        <div class="p-6 border-t border-slate-800">
+            <p class="text-xs text-slate-400 mb-2">Pr. Méditerranée | 2026</p>
+            <span class="inline-block px-2 py-1 bg-teal-500/20 text-teal-400 text-xs font-bold rounded">EXPERT</span>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full bg-[#f8fafc] overflow-hidden relative">
+        <div class="p-8 flex-1 overflow-y-auto custom-scrollbar">
+            
+            <div class="grid grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex items-center gap-4">
+                    <div class="bg-teal-50 text-teal-500 p-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">22</h2>
+                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wide">Pathologies DRETTEP</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex items-center gap-4">
+                    <div class="bg-teal-50 text-teal-500 p-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800">7</h2>
+                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wide">Spécialités</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-100 flex items-center gap-4">
+                    <div class="bg-teal-50 text-teal-500 p-3 rounded-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Expert</h2>
+                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wide">Niveau de Contenu</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-slate-800">Dernières Fiches Pathologiques</h2>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-12">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                            <th class="py-4 px-6 font-semibold">Pathologie</th>
+                            <th class="py-4 px-6 font-semibold">Spécialité</th>
+                            <th class="py-4 px-6 font-semibold">Statut</th>
+                            <th class="py-4 px-6 font-semibold text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-slate-100" id="pathology-table">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div id="visModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+        <div class="bg-white w-11/12 max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all">
+            
+            <div class="flex justify-between items-start p-6 border-b border-slate-100">
+                <div>
+                    <span id="modal-specialty" class="text-xs font-bold uppercase tracking-wide text-teal-600 mb-1 block">HEMATOLOGY</span>
+                    <h2 id="modal-title" class="text-2xl font-bold text-slate-800">Drépanocytose</h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full p-2 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="flex flex-1 overflow-hidden bg-slate-50/50">
+                <div class="w-64 p-4 flex flex-col gap-2 border-r border-slate-100 bg-white">
+                    <button class="tab-btn active text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-def')">
+                        <span class="block text-xs font-bold mb-0.5">D/T</span> Définition
+                    </button>
+                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-etio')">
+                        <span class="block text-xs font-bold mb-0.5">E/P</span> Etiologie
+                    </button>
+                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-semio')">
+                        <span class="block text-xs font-bold mb-0.5">T</span> Sémiologie
+                    </button>
+                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-para')">
+                        <span class="block text-xs font-bold mb-0.5">E</span> Paraclinique
+                    </button>
+                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-evo')">
+                        <span class="block text-xs font-bold mb-0.5">E</span> Evolution
+                    </button>
+                    <button class="tab-btn text-left px-4 py-3 rounded-lg text-sm text-slate-600 hover:bg-slate-50 transition-colors" onclick="openTab(event, 'tab-trait')">
+                        <span class="block text-xs font-bold mb-0.5">P</span> Traitement
+                    </button>
+                </div>
+
+                <div class="flex-1 p-8 overflow-y-auto">
+                    <div id="tab-def" class="tab-content active">
+                        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-slate-700">
+                            <h3 class="font-bold text-slate-800 mb-2">D/T</h3>
+                            <p>Hémoglobinopathie héréditaire (mutation HbS). Homozygote (SS) vs Hétérozygote (AS).</p>
+                        </div>
+                    </div>
+
+                    <div id="tab-etio" class="tab-content">
+                        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-slate-700">
+                            <h3 class="font-bold text-slate-800 mb-2">R/E</h3>
+                            <p>Substitution d'un acide aminé (Glu→Val) sur la chaîne bêta. Physiopath: Falciformation des hématies en hypoxie.</p>
+                        </div>
+                    </div>
+
+                    <div id="tab-semio" class="tab-content">
+                        <div class="bg-blue-50/50 p-6 rounded-xl border border-blue-100 text-slate-700">
+                            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-wide">T : Tableau Clinique</h3>
+                            <ul class="space-y-3">
+                                <li><strong class="text-slate-900">Douleur osseuse (CVO) :</strong> Diag Diff : Ostéomyélite, Traumatisme.</li>
+                                <li><strong class="text-slate-900">Ictère :</strong> Diag Diff : Hépatite virale, Lithiase biliaire.</li>
+                                <li><strong class="text-slate-900">Splénomégalie (enfant) :</strong> Diag Diff : Paludisme, Leucémie.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="tab-para" class="tab-content">
+                        <div class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+                            <div class="p-4 bg-slate-50 border-b border-slate-100">
+                                <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wide">E : Examens Paracliniques</h3>
+                            </div>
+                            <table class="w-full text-left text-sm text-slate-700">
+                                <thead>
+                                    <tr class="border-b border-slate-100">
+                                        <th class="p-4 font-semibold">Examen</th>
+                                        <th class="p-4 font-semibold">Objectif/Justification</th>
+                                        <th class="p-4 font-semibold">Valeurs Normales</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-slate-50">
+                                        <td class="p-4">Electrophorèse Hb</td>
+                                        <td class="p-4">Identifier HbS (Certitude diagnostique)</td>
+                                        <td class="p-4">HbA1: 97% / HbS: 0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4">Réticulocytes</td>
+                                        <td class="p-4">Signer l'hémolyse chronique</td>
+                                        <td class="p-4">20-100 G/L</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tab-evo" class="tab-content">
+                        <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm text-slate-700">
+                            <h3 class="font-bold text-slate-800 mb-2">E : Évolution</h3>
+                            <p>AVC, Syndrome Thoracique Aigu (STA), Insuffisance rénale chronique.</p>
+                        </div>
+                    </div>
+
+                    <div id="tab-trait" class="tab-content">
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 text-slate-700">
+                            <h3 class="font-bold text-slate-800 mb-4 text-xs uppercase tracking-wide">P : Prise en charge (PNDS 2024)</h3>
+                            <div class="space-y-3">
+                                <p><strong class="text-slate-900">Traitement de fond :</strong> Hydroxyurée (15-30 mg/kg/j).</p>
+                                <p><strong class="text-slate-900">Justification :</strong> Augmente l'HbF (foetale) qui empêche la polymérisation de l'HbS.</p>
+                                <p><strong class="text-slate-900">Prophylaxie :</strong> Pénicilline V (Oracilline) jusqu'à 15-18 ans (indispensable contre le pneumocoque). Supplémentation en Acide Folique (5mg/j).</p>
+                                <p><strong class="text-slate-900">Urgences (CVO/STA) :</strong> Hydratation massive (perfusion), Morphine (palier 3), Transfusion d'échange si STA (Hb cible 10 g/dL).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données complètes fournies dans le prompt
+        const pathologiesData = [
+            // Hématologie
+            { nom: "Anémie", spec: "HEMATO", specColor: "bg-red-50 text-red-600" },
+            { nom: "Leucémie", spec: "HEMATO", specColor: "bg-red-50 text-red-600" },
+            { nom: "Drépanocytose", spec: "HEMATO", specColor: "bg-red-50 text-red-600" },
+            // Hépato Gastro
+            { nom: "Gastro-entérite", spec: "GASTRO", specColor: "bg-yellow-50 text-yellow-700" },
+            { nom: "Hémorragie digestive", spec: "GASTRO", specColor: "bg-yellow-50 text-yellow-700" },
+            { nom: "Hépatalgie (Dg diff: Hépatomégalie)", spec: "GASTRO", specColor: "bg-yellow-50 text-yellow-700" },
+            { nom: "Ascite", spec: "GASTRO", specColor: "bg-yellow-50 text-yellow-700" },
+            { nom: "Gastrite", spec: "GASTRO", specColor: "bg-yellow-50 text-yellow-700" },
+            // Pneumologie
+            { nom: "Embolie pulmonaire", spec: "PNEUMO", specColor: "bg-blue-50 text-blue-600" },
+            { nom: "TBC", spec: "PNEUMO", specColor: "bg-blue-50 text-blue-600" },
+            { nom: "Asthme", spec: "PNEUMO", specColor: "bg-blue-50 text-blue-600" },
+            { nom: "OAP", spec: "PNEUMO", specColor: "bg-blue-50 text-blue-600" },
+            // Cardiologie
+            { nom: "HTA", spec: "CARDIO", specColor: "bg-rose-50 text-rose-600" },
+            { nom: "IC (Insuffisance Cardiaque)", spec: "CARDIO", specColor: "bg-rose-50 text-rose-600" },
+            { nom: "DCG", spec: "CARDIO", specColor: "bg-rose-50 text-rose-600" },
+            // Infectiologie / PIT
+            { nom: "VIH", spec: "PIT/INFECTIO", specColor: "bg-purple-50 text-purple-600" },
+            { nom: "Sepsis", spec: "PIT/INFECTIO", specColor: "bg-purple-50 text-purple-600" },
+            // Néphrologie
+            { nom: "IR (Insuffisance Rénale)", spec: "NEPHRO", specColor: "bg-orange-50 text-orange-600" },
+            { nom: "Maladie rénale", spec: "NEPHRO", specColor: "bg-orange-50 text-orange-600" },
+            // Neurologie
+            { nom: "AVC", spec: "NEURO", specColor: "bg-indigo-50 text-indigo-600" },
+            { nom: "Coma fébrile et non fébrile", spec: "NEURO", specColor: "bg-indigo-50 text-indigo-600" }
+        ];
+
+        // Générer le tableau HTML dynamiquement
+        const tbody = document.getElementById('pathology-table');
+        pathologiesData.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition-colors group";
+            tr.innerHTML = `
+                <td class="py-4 px-6 font-medium text-slate-800">${item.nom}</td>
+                <td class="py-4 px-6">
+                    <span class="inline-block px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-md ${item.specColor}">
+                        ${item.spec}
+                    </span>
+                </td>
+                <td class="py-4 px-6 text-slate-500 text-xs">COMPLET (DRETTEP)</td>
+                <td class="py-4 px-6">
+                    <div class="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="openModal('${item.nom}', '${item.spec}')" class="px-3 py-1.5 text-xs font-semibold text-teal-600 border border-teal-200 hover:bg-teal-50 rounded transition-colors">
+                            Visualiser
+                        </button>
+                        <button class="p-1.5 text-red-500 bg-red-50 hover:bg-red-100 rounded transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Gestion de la modale
+        const modal = document.getElementById('visModal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSpec = document.getElementById('modal-specialty');
+
+        function openModal(nom, spec) {
+            modalTitle.textContent = nom;
+            modalSpec.textContent = spec;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // Fermer la modale en cliquant en dehors
+        modal.addEventListener('click', function(e) {
+            if(e.target === modal) closeModal();
+        });
+
+        // Gestion des onglets de la modale
+        function openTab(evt, tabId) {
+            // Cacher tous les contenus
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+
+            // Retirer la classe 'active' de tous les boutons
+            const tabBtns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < tabBtns.length; i++) {
+                tabBtns[i].classList.remove("active");
+            }
+
+            // Afficher le contenu ciblé et activer le bouton
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
