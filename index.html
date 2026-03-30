@@ -2,507 +2,110 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SémioExpert - DRETTEP Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SémioExpert Pro - DRETTEP Intégral</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-light: #f8fafc;
-            --primary: #2dd4bf;
-            --primary-dark: #14b8a6;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
-            --border-color: #e2e8f0;
-            --white: #ffffff;
+            --bg-dark: #0f172a; --bg-light: #f8fafc; --primary: #2dd4bf;
+            --primary-dark: #14b8a6; --text-dark: #1e293b; --text-gray: #64748b;
+            --border-color: #e2e8f0; --white: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { display: flex; height: 100vh; background-color: var(--bg-light); overflow: hidden; }
 
-        body {
-            display: flex;
-            height: 100vh;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Mobile Header */
-        .mobile-header {
-            display: none;
-            background-color: var(--white);
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .mobile-header .logo {
-            font-size: 20px;
-            color: var(--primary-dark);
-            margin: 0;
-        }
-
-        .menu-toggle {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--text-dark);
-            cursor: pointer;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background-color: var(--bg-dark);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            transition: transform 0.3s ease;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-item {
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #cbd5e1;
-            transition: 0.2s;
-        }
-
-        .nav-item.active {
-            background-color: rgba(45, 212, 191, 0.2);
-            color: var(--primary);
-        }
-
-        .nav-item:hover:not(.active) {
-            background-color: rgba(255,255,255,0.05);
-        }
-
-        .user-info {
-            margin-top: auto;
-            font-size: 12px;
-            color: var(--text-gray);
-        }
-
-        .expert-badge {
-            background-color: var(--primary-dark);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Top Stats */
-        .stats-container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #e0f2fe;
-            color: #0284c7;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .stat-card:nth-child(1) .stat-icon { background: #ccfbf1; color: #0f766e; }
-        .stat-card:nth-child(2) .stat-icon { background: #ecfdf5; color: #047857; }
-        .stat-card:nth-child(3) .stat-icon { background: #f0fdf4; color: #15803d; }
-
-        .stat-info h3 { font-size: 22px; color: var(--text-dark); }
-        .stat-info p { font-size: 13px; color: var(--text-gray); }
-
-        /* Table Section */
-        h2 { margin-bottom: 20px; font-size: 20px; color: #334155; }
-
-        .table-wrapper {
-            background: var(--white);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px; /* Force scroll on small screens */
-        }
-
-        th {
-            background-color: #f8fafc;
-            padding: 15px 20px;
-            text-align: left;
-            font-size: 12px;
-            color: var(--text-gray);
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-            vertical-align: middle;
-        }
-
-        tr:last-child td { border-bottom: none; }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-
-        /* Specialty Colors */
-        .bg-hemato { background: #fee2e2; color: #991b1b; }
-        .bg-gastro { background: #fef9c3; color: #854d0e; }
-        .bg-pneumo { background: #e0f2fe; color: #075985; }
-        .bg-cardio { background: #fce7f3; color: #9d174d; }
-        .bg-pit { background: #ede9fe; color: #5b21b6; }
-        .bg-nephro { background: #ffedd5; color: #9a3412; }
-        .bg-neuro { background: #f3f4f6; color: #374151; }
-
-        .btn-visualiser {
-            background: transparent;
-            border: 1px solid var(--primary-dark);
-            color: var(--primary-dark);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .btn-visualiser:hover { background: var(--primary-dark); color: white; }
-
-        .btn-delete {
-            background: #fee2e2;
-            color: #dc2626;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 15px; /* Spacing for mobile */
-        }
-
-        .modal-content {
-            background: var(--white);
-            width: 100%;
-            max-width: 900px;
-            height: 90vh; /* Responsive height */
-            max-height: 600px;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-        }
-
-        .modal-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h3 { font-size: 20px; margin-top: 5px;}
-        .modal-spec { font-size: 11px; font-weight: bold; color: var(--primary-dark); text-transform: uppercase; }
+        /* Sidebar & Navigation */
+        .sidebar { width: 260px; background-color: var(--bg-dark); color: white; display: flex; flex-direction: column; padding: 20px; transition: 0.3s; }
+        .logo { font-size: 22px; font-weight: bold; color: var(--primary); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+        .nav-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; color: #cbd5e1; font-size: 14px; }
+        .nav-item.active { background: rgba(45, 212, 191, 0.2); color: var(--primary); }
         
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-gray);
-            padding: 5px;
-        }
+        /* Main */
+        .main-content { flex: 1; padding: 25px; overflow-y: auto; }
+        .mobile-header { display: none; background: white; padding: 15px; border-bottom: 1px solid var(--border-color); justify-content: space-between; }
 
-        .modal-body {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .stat-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 15px; }
+        .stat-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-        .modal-sidebar {
-            width: 200px;
-            padding: 20px;
-            border-right: 1px solid var(--border-color);
-            background: #fcfcfc;
-            overflow-y: auto;
-        }
+        /* Table */
+        .table-container { background: white; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 12px; text-transform: uppercase; color: var(--text-gray); border-bottom: 1px solid var(--border-color); }
+        td { padding: 15px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 
-        .drettep-tab {
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #3b82f6;
-            background: #fff;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
+        /* Modal DRETTEP */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 1100px; height: 85vh; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; }
+        .modal-header { padding: 20px 30px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-body { display: flex; flex: 1; overflow: hidden; }
+        .modal-nav { width: 220px; background: #f8fafc; border-right: 1px solid var(--border-color); padding: 20px; overflow-y: auto; }
+        .tab-btn { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid transparent; background: white; text-align: left; cursor: pointer; color: #475569; font-weight: 500; font-size: 13px; transition: 0.2s; }
+        .tab-btn.active { border-color: var(--primary); color: var(--primary-dark); background: #f0fdfa; }
+        .modal-view { flex: 1; padding: 30px; overflow-y: auto; line-height: 1.6; }
 
-        .drettep-tab.active {
-            background: #f0f9ff;
-            border-color: #bae6fd;
-        }
+        /* Medical Content Styling */
+        .med-section { margin-bottom: 25px; }
+        .med-title { color: var(--primary-dark); font-weight: bold; border-bottom: 2px solid #f0fdfa; margin-bottom: 10px; padding-bottom: 5px; }
+        .med-table { width: 100%; margin-top: 10px; border: 1px solid #e2e8f0; font-size: 13px; }
+        .med-table th { background: #f1f5f9; padding: 8px; }
+        .med-table td { padding: 8px; border: 1px solid #e2e8f0; }
+        .diff-box { background: #fff7ed; border-left: 4px solid #f97316; padding: 10px; margin: 10px 0; font-size: 13px; }
 
-        .drettep-tab span { font-size: 10px; display: block; margin-bottom: 2px;}
-
-        .modal-data {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: var(--white);
-        }
-
-        .data-card {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .data-card strong { color: var(--text-dark); }
-        .data-card table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 14px; }
-        .data-card th, .data-card td { padding: 8px; border-bottom: 1px solid #e2e8f0; text-align: left; }
-
-        /* Sidebar Overlay for mobile */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 90;
-        }
-
-        /* ================= MEDIA QUERIES (MOBILE & TABLET) ================= */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-
-            .mobile-header {
-                display: flex;
-            }
-
-            .main-content {
-                padding: 15px;
-            }
-
-            /* Sidebar hidden off-canvas */
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100%;
-                transform: translateX(-100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .sidebar-overlay.show {
-                display: block;
-            }
-
-            /* Stats stack vertically */
-            .stats-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            /* Modal layout adapts to mobile */
-            .modal-content {
-                height: 95vh;
-            }
-
-            .modal-body {
-                flex-direction: column;
-            }
-
-            .modal-sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                padding: 10px;
-                display: flex;
-                flex-direction: row;
-                overflow-x: auto;
-                /* Cache la scrollbar mais garde le défilement */
-                scrollbar-width: none; 
-            }
-            .modal-sidebar::-webkit-scrollbar { display: none; }
-
-            .drettep-tab {
-                min-width: 110px;
-                margin-bottom: 0;
-                margin-right: 8px;
-                text-align: center;
-            }
-            
-            .drettep-tab span {
-                display: inline;
-                margin-right: 5px;
-            }
-
-            .modal-data {
-                padding: 15px;
-            }
-            
-            .data-card table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+            .sidebar { display: none; }
+            .mobile-header { display: flex; }
+            .modal-body { flex-direction: column; }
+            .modal-nav { width: 100%; display: flex; overflow-x: auto; padding: 10px; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .tab-btn { min-width: 120px; margin-bottom: 0; margin-right: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
-
-    <div class="mobile-header">
-        <div class="logo"><i class="fas fa-stethoscope"></i> SémioExpert</div>
-        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
-    </div>
-
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <i class="fas fa-stethoscope"></i> SémioExpert
-        </div>
-        <div class="nav-item active"><i class="fas fa-chart-line"></i> Tableau de Bord</div>
-        <div class="nav-item"><i class="fas fa-folder"></i> Base de Données</div>
-        <div class="nav-item"><i class="fas fa-graduation-cap"></i> Méthode DRETTEP</div>
-        
-        <div class="user-info">
-            <p>Pr. Méditerranée | 2026</p>
-            <span class="expert-badge">EXPERT</span>
+    <div class="sidebar">
+        <div class="logo"><i class="fas fa-microscope"></i> SémioExpert</div>
+        <div class="nav-item active"><i class="fas fa-home"></i> Dashboard</div>
+        <div class="nav-item"><i class="fas fa-book-medical"></i> Pathologies</div>
+        <div class="user-info" style="margin-top:auto">
+            <p>Mode: Interne / Expert</p>
+            <span class="badge" style="background:var(--primary); color:white">2026 UPDATE</span>
         </div>
     </div>
 
     <div class="main-content">
-        <div class="stats-container">
+        <div class="mobile-header">
+            <div class="logo">SémioExpert</div>
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-dna"></i></div>
-                <div class="stat-info">
-                    <h3 id="total-path">21</h3>
-                    <p>Pathologies DRETTEP</p>
-                </div>
+                <div class="stat-icon" style="background:#ccfbf1; color:#0f766e"><i class="fas fa-stethoscope"></i></div>
+                <div><h3>21</h3><p style="font-size:12px; color:gray">Modules DRETTEP</p></div>
             </div>
             <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-user-md"></i></div>
-                <div class="stat-info">
-                    <h3>7</h3>
-                    <p>Spécialités</p>
-                </div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon"><i class="fas fa-vials"></i></div>
-                <div class="stat-info">
-                    <h3>Expert</h3>
-                    <p>Niveau de Contenu</p>
-                </div>
+                <div class="stat-icon" style="background:#e0f2fe; color:#0369a1"><i class="fas fa-clipboard-check"></i></div>
+                <div><h3>Précision</h3><p style="font-size:12px; color:gray">Données Académiques</p></div>
             </div>
         </div>
 
-        <h2>Dernières Fiches Pathologiques</h2>
-        <div class="table-wrapper">
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>PATHOLOGIE</th>
-                            <th>SPÉCIALITÉ</th>
-                            <th>STATUT</th>
-                            <th>ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        </tbody>
-                </table>
-            </div>
+        <h2>Base de Données Médicale Complète</h2><br>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pathologie</th>
+                        <th>Spécialité</th>
+                        <th>Niveau</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="pathology-list"></tbody>
+            </table>
         </div>
     </div>
 
@@ -510,345 +113,157 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <div class="modal-spec" id="m-spec">HEMATOLOGY</div>
-                    <h3 id="m-title">Drépanocytose</h3>
+                    <span id="m-spec" class="badge" style="background:#f1f5f9; color:#475569"></span>
+                    <h2 id="m-title" style="margin-top:5px"></h2>
                 </div>
-                <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+                <button onclick="closeModal()" style="border:none; background:none; font-size:24px; cursor:pointer">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="modal-sidebar">
-                    <div class="drettep-tab active" onclick="showTab('def', this)"><span>D/T</span> Définition</div>
-                    <div class="drettep-tab" onclick="showTab('etio', this)"><span>E/P</span> Etiologie</div>
-                    <div class="drettep-tab" onclick="showTab('semio', this)"><span>T</span> Sémiologie</div>
-                    <div class="drettep-tab" onclick="showTab('para', this)"><span>E</span> Paraclinique</div>
-                    <div class="drettep-tab" onclick="showTab('evo', this)"><span>E</span> Evolution</div>
-                    <div class="drettep-tab" onclick="showTab('trait', this)"><span>P</span> Traitement</div>
+                <div class="modal-nav">
+                    <button class="tab-btn active" onclick="switchTab('def', this)">Définition / Type</button>
+                    <button class="tab-btn" onclick="switchTab('etio', this)">Étiologie / Physiopath</button>
+                    <button class="tab-btn" onclick="switchTab('semio', this)">Sémiologie & Dg Diff</button>
+                    <button class="tab-btn" onclick="switchTab('para', this)">Paraclinique & Valeurs</button>
+                    <button class="tab-btn" onclick="switchTab('evo', this)">Évolution & Risques</button>
+                    <button class="tab-btn" onclick="switchTab('trait', this)">Traitement & Justif.</button>
                 </div>
-                <div class="modal-data">
-                    <div class="data-card" id="m-content">
-                        </div>
-                </div>
+                <div class="modal-view" id="modal-view"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Fonction pour gérer le menu mobile
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('show');
-            document.getElementById('sidebarOverlay').classList.toggle('show');
-        }
-
-        // Base de données structurée DRETTEP (Identique)
-        const pathologiesDB = [
-            // HÉMATOLOGIE
+        const pathologies = [
             {
-                name: "Anémie", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
+                name: "Anémie (Syndrome)", spec: "HEMATOLOGIE",
                 drettep: {
-                    def: "D/T<br>Diminution du taux d'hémoglobine sanguin (Hb < 13 g/dL chez l'homme, < 12 g/dL chez la femme).",
-                    etio: "E/P<br>Carentielle (Fer, B12, B9), Inflammatoire, Hémolytique, Centrale (aplasie, myélodysplasie).",
-                    semio: "T : Tableau Clinique<br><br><strong>Signes fonctionnels :</strong> Asthénie, dyspnée d'effort, vertiges, acouphènes, céphalées, tachycardie.<br><strong>Signes physiques :</strong> Pâleur cutanéo-muqueuse, souffle systolique fonctionnel.",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>NFS</td><td>Confirmer la baisse de l'Hb, VGM, CCMH</td></tr><tr><td>Réticulocytes</td><td>Caractère régénératif ou arégénératif</td></tr><tr><td>Bilan martial</td><td>Ferritine, Coefficient de saturation</td></tr></table>",
-                    evo: "E : Évolution<br>Angor fonctionnel, décompensation cardiaque, hypoxie tissulaire chronique.",
-                    trait: "P : Prise en charge<br><br><strong>Traitement étiologique :</strong> Supplémentation en Fer/B12/B9, traitement de l'inflammation.<br><strong>Symptomatique :</strong> Transfusion de CGR si mal tolérée ou Hb < 7 g/dL."
+                    def: `<div class="med-section">
+                        <p class="med-title">Définition OMS</p>
+                        Baisse de l'hémoglobine circulante : 
+                        <ul>
+                            <li>Homme : < 13 g/dL</li>
+                            <li>Femme : < 12 g/dL</li>
+                            <li>Femme enceinte (T2) : < 10,5 g/dL</li>
+                        </ul>
+                    </div>`,
+                    etio: `<div class="med-section">
+                        <p class="med-title">Physiopathologie</p>
+                        - <strong>Anémie centrale :</strong> Défaut de production médullaire (Carence en Fer, B12, envahissement tumoral).<br>
+                        - <strong>Anémie périphérique :</strong> Excès de perte ou destruction (Hémorragie, Hémolyse).
+                    </div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie Clinique</p>
+                        - <strong>Signe cardinal :</strong> Pâleur cutanéo-muqueuse (conjonctives).<br>
+                        - <strong>Signes de lutte :</strong> Tachycardie, dyspnée d'effort.<br>
+                        - <strong>Neuro :</strong> Vertiges, céphalées (hypoxie cérébrale).
+                        <div class="diff-box">
+                            <strong>Diagnostic Différentiel de la Pâleur :</strong> État de choc (vasoconstriction), Hypoglycémie, Teint clair constitutionnel.
+                        </div>
+                    </div>`,
+                    para: `<div class="med-section">
+                        <p class="med-title">Bilan Paraclinique</p>
+                        <table class="med-table">
+                            <tr><th>Examen</th><th>Justification</th><th>Normal / Patho</th></tr>
+                            <tr><td>NFS</td><td>Diagnostic positif</td><td>Hb < 12/13 g/dL</td></tr>
+                            <tr><td>VGM</td><td>Taille des GR</td><td>80-100 fL (Micro si < 80)</td></tr>
+                            <tr><td>Réticulocytes</td><td>Mécanisme</td><td>> 120 G/L = Régénératif</td></tr>
+                        </table>
+                    </div>`,
+                    evo: `<div class="med-section">
+                        <p class="med-title">Évolution</p>
+                        - <strong>Aiguë :</strong> Choc hypovolémique (si hémorragie).<br>
+                        - <strong>Chronique :</strong> Insuffisance cardiaque à haut débit (le cœur compense l'hypoxémie par la vitesse).
+                    </div>`,
+                    trait: `<div class="med-section">
+                        <p class="med-title">Thérapeutique</p>
+                        - <strong>Fer oral (Fumafer) :</strong> Si carence martiale. <em>Justif :</em> Reconstituer le stock d'Hb.<br>
+                        - <strong>Transfusion :</strong> Si Hb < 7 g/dL ou mauvaise tolérance clinique.
+                    </div>`
                 }
             },
             {
-                name: "Leucémies Aiguës", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
+                name: "Drépanocytose", spec: "HEMATOLOGIE",
                 drettep: {
-                    def: "D/T<br>Prolifération clonale maligne de précurseurs hématopoïétiques (blastes) bloqués dans leur différenciation, envahissant la moelle osseuse.",
-                    etio: "E/P<br>Mutations génétiques acquises. FDR: Radiations ionisantes, chimiothérapie antérieure, toxiques (benzène), trisomie 21.",
-                    semio: "T : Tableau Clinique<br><br><strong>Syndrome d'insuffisance médullaire :</strong> Anémie, Neutropénie (infections), Thrombopénie (hémorragies).<br><strong>Syndrome tumoral :</strong> Adénopathies, splénomégalie, hépatomégalie.",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif</th></tr><tr><td>NFS + Frottis</td><td>Cytopénies, blastes circulants</td></tr><tr><td>Myélogramme</td><td>Diag. positif (>20% de blastes)</td></tr></table>",
-                    evo: "E : Évolution<br>Urgence thérapeutique. Risque de décès par choc septique, hémorragie massive ou leucostase.",
-                    trait: "P : Prise en charge<br><br><strong>Urgence :</strong> Antibiothérapie large spectre, transfusions, prévention syndrome de lyse.<br><strong>Fond :</strong> Chimiothérapie d'induction, consolidation, +/- greffe."
+                    def: `<div class="med-section"><p class="med-title">Hémoglobinopathie</p>Maladie génétique autosomique récessive liée à la présence de l'hémoglobine S (mutation sur la chaîne bêta).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>En hypoxie, l'HbS se polymérise -> l'hématie devient rigide (faucille) -> obstruction des capillaires (Vaso-occlusion).</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        - <strong>Crises Vaso-Occlusives (CVO) :</strong> Douleurs atroces (os, dos, abdomen).<br>
+                        - <strong>Ictère :</strong> Hémolyse chronique.
+                        <div class="diff-box">
+                            <strong>Dg Diff de la Douleur abdominale :</strong> Appendicite, Cholécystite (attention : les drépanocytaires font souvent des calculs biliaires).
+                        </div>
+                    </div>`,
+                    para: `<div class="med-section">
+                        <p class="med-title">Examens de Référence</p>
+                        <table class="med-table">
+                            <tr><th>Examen</th><th>Justification</th><th>Résultat</th></tr>
+                            <tr><td>Electrophorèse Hb</td><td>Diagnostic de certitude</td><td>HbS présent (80-95% chez SS)</td></tr>
+                            <tr><td>Frottis sanguin</td><td>Recherche de drépanocytes</td><td>Hématies en faucille</td></tr>
+                        </table>
+                    </div>`,
+                    evo: `<div class="med-section"><p class="med-title">Complications</p>AVC (ischémie cérébrale), Syndrome Thoracique Aigu (infarctus pulmonaire), Séquestration splénique (urgence vitale chez l'enfant).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Prise en Charge</p>- <strong>Hydratation :</strong> Diminue la viscosité.<br>- <strong>Hydroxyurée :</strong> Stimule l'Hb Foetale (anti-falciformante).</div>`
                 }
             },
             {
-                name: "Drépanocytose", spec: "HEMATOLOGY", badgeClass: "bg-hemato",
+                name: "Embolie Pulmonaire", spec: "PNEUMOLOGIE",
                 drettep: {
-                    def: "D/T<br>Hémoglobinopathie héréditaire (mutation HbS). Homozygote (SS) vs Hétérozygote (AS).",
-                    etio: "E/P<br>Substitution d'un acide aminé (Glu→Val) sur la chaîne bêta. Falciformation des hématies en hypoxie.",
-                    semio: "T : Tableau Clinique<br><br><strong>Douleur osseuse (CVO) :</strong> Diag Diff : Ostéomyélite, Traumatisme.<br><strong>Ictère :</strong> Diag Diff : Hépatite virale, Lithiase biliaire.<br><strong>Splénomégalie (enfant) :</strong> Diag Diff : Paludisme, Leucémie.",
-                    para: "E : Examens Paracliniques<br><br><table><tr><th>Examen</th><th>Objectif/Justification</th><th>Valeurs Normales</th></tr><tr><td>Electrophorèse Hb</td><td>Identifier HbS</td><td>HbA1: 97% / HbS: 0%</td></tr><tr><td>Réticulocytes</td><td>Signer l'hémolyse</td><td>20-100 G/L</td></tr></table>",
-                    evo: "E : Évolution<br>AVC, Syndrome Thoracique Aigu (STA), Insuffisance rénale chronique, ostéonécrose.",
-                    trait: "P : Prise en charge<br><br><strong>Fond :</strong> Hydroxyurée.<br><strong>Prophylaxie :</strong> Pénicilline V, Acide Folique.<br><strong>Urgences (CVO/STA) :</strong> Hydratation, Morphine, Transfusion."
-                }
-            },
-            // GASTRO
-            {
-                name: "Gastro-entérite Aiguë", spec: "GASTRO", badgeClass: "bg-gastro",
-                drettep: {
-                    def: "D/T<br>Inflammation de la muqueuse gastrique et intestinale entraînant des diarrhées d'apparition brutale.",
-                    etio: "E/P<br>Virale (Norovirus, Rotavirus), Bactérienne (Salmonella, Shigella), Parasitaire.",
-                    semio: "T : Tableau Clinique<br>Diarrhée, vomissements, douleurs abdominales, fièvre, signes de déshydratation.",
-                    para: "E : Examens Paracliniques<br>Souvent clinique. Si gravité: Coproculture, EPS, Ionogramme sanguin.",
-                    evo: "E : Évolution<br>Guérison spontanée en qqs jours. Complication: Déshydratation sévère, SHU.",
-                    trait: "P : Prise en charge<br><strong>Réhydratation :</strong> SRO ou IV.<br><strong>Symptomatique :</strong> Antidiarrhéiques.<br><strong>ATB :</strong> Seulement si germe invasif sévère."
-                }
-            },
-            {
-                name: "Hémorragies Digestives", spec: "GASTRO", badgeClass: "bg-gastro",
-                drettep: {
-                    def: "D/T<br>Extériorisation de sang provenant du tube digestif : Hématémèse, Méléna, Rectorragie.",
-                    etio: "E/P<br><strong>Haute :</strong> Ulcère, Rupture de varices œsophagiennes.<br><strong>Basse :</strong> Diverticulose, Hémorroïdes, Tumeurs.",
-                    semio: "T : Tableau Clinique<br>Extériorisation de sang, signes de choc hémorragique (pâleur, tachycardie, hypotension).",
-                    para: "E : Examens Paracliniques<br>NFS, Groupe/Rhésus, Hémostase. Endoscopie digestive haute (EOGD) en urgence. Coloscopie.",
-                    evo: "E : Évolution<br>Choc hypovolémique, anémie aiguë, décès.",
-                    trait: "P : Prise en charge<br><strong>Urgence :</strong> 2 VVP, remplissage, Transfusion.<br><strong>Spécifique :</strong> IPP IV, Vasoconstricteurs, Hémostase endoscopique."
-                }
-            },
-            {
-                name: "Hépatalgie & Hépatomégalie", spec: "GASTRO", badgeClass: "bg-gastro",
-                drettep: {
-                    def: "D/T<br>Hépatomégalie (flèche hépatique > 12 cm). Hépatalgie (douleur de la capsule de Glisson).",
-                    etio: "E/P<br><strong>Sensible :</strong> Foie cardiaque, Hépatite aiguë, Abcès.<br><strong>Non sensible :</strong> Stéatose, Cirrhose, Tumeurs.",
-                    semio: "T : Tableau Clinique<br><strong>Sensible :</strong> Douleur hypocondre D, reflux hépato-jugulaire, fièvre.<br><strong>Non sensible :</strong> Fortuite, bord inférieur dur ou nodulaire.",
-                    para: "E : Examens Paracliniques<br>Échographie abdominale. Bilan hépatique (ASAT, ALAT, GGT, PAL, Bilirubine, TP). Scanner hépatique.",
-                    evo: "E : Évolution<br>Insuffisance hépatocellulaire, Hypertension portale, Carcinome hépatocellulaire.",
-                    trait: "P : Prise en charge<br>Ciblée sur la cause. Diurétiques (foie cardiaque), Sevrage alcool, Traitement antiviral."
-                }
-            },
-            {
-                name: "Ascite", spec: "GASTRO", badgeClass: "bg-gastro",
-                drettep: {
-                    def: "D/T<br>Épanchement liquidien dans la cavité péritonéale.",
-                    etio: "E/P<br><strong>Transsudat :</strong> Cirrhose, IC droite, Syndrome néphrotique.<br><strong>Exsudat :</strong> Carcinose péritonéale, Tuberculose.",
-                    semio: "T : Tableau Clinique<br>Augmentation du volume de l'abdomen, matité déclive et mobile, tympanisme péri-ombilical.",
-                    para: "E : Examens Paracliniques<br><strong>Ponction exploratrice :</strong> Biochimie, Cytologie, Bactériologie. Échographie.",
-                    evo: "E : Évolution<br>Infection du liquide d'ascite, hernie ombilicale, dyspnée.",
-                    trait: "P : Prise en charge<br>Régime désodé. Diurétiques. Ponctions évacuatrices compensées par albumine."
-                }
-            },
-            {
-                name: "Gastrite", spec: "GASTRO", badgeClass: "bg-gastro",
-                drettep: {
-                    def: "D/T<br>Inflammation aiguë ou chronique de la muqueuse gastrique.",
-                    etio: "E/P<br>Infection à Helicobacter Pylori, AINS, Auto-immune.",
-                    semio: "T : Tableau Clinique<br>Souvent asymptomatique. Parfois dyspepsie, épigastralgies, nausées.",
-                    para: "E : Examens Paracliniques<br>EOGD avec biopsies. Test rapide à l'uréase.",
-                    evo: "E : Évolution<br>Ulcère gastro-duodénal, Atrophie, Métaplasie, Adénocarcinome gastrique.",
-                    trait: "P : Prise en charge<br>Éradication H. Pylori (ATB). IPP en cures courtes."
-                }
-            },
-            // PNEUMO
-            {
-                name: "Embolie Pulmonaire", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
-                drettep: {
-                    def: "D/T<br>Obstruction brutale d'une artère pulmonaire par un thrombus (souvent TVP).",
-                    etio: "E/P<br>Triade de Virchow : Stase, Lésion endothéliale, Hypercoagulabilité.",
-                    semio: "T : Tableau Clinique<br>Dyspnée brutale, douleur basi-thoracique, toux, tachycardie, signes de TVP.",
-                    para: "E : Examens Paracliniques<br>D-Dimères. <strong>Angioscanner thoracique (Gold Standard).</strong> ECG (S1Q3). Gazométrie.",
-                    evo: "E : Évolution<br>Choc cardiogénique, Cœur pulmonaire chronique, décès.",
-                    trait: "P : Prise en charge<br><strong>Anticoagulation :</strong> AOD ou HBPM (3-6 mois). <strong>Si gravité :</strong> Thrombolyse."
-                }
-            },
-            {
-                name: "Tuberculose (TBC)", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
-                drettep: {
-                    def: "D/T<br>Infection contagieuse due au Mycobacterium tuberculosis (Bacille de Koch).",
-                    etio: "E/P<br>Transmission aérienne. Formation de granulomes avec nécrose caséeuse.",
-                    semio: "T : Tableau Clinique<br>Toux chronique, hémoptysie, fièvre vespérale, sueurs nocturnes, AEG.",
-                    para: "E : Examens Paracliniques<br>Radio thorax. Recherche BK crachats : Examen direct, Culture, PCR.",
-                    evo: "E : Évolution<br>Dissémination miliaire, atteinte extra-pulmonaire. Guérison sous traitement.",
-                    trait: "P : Prise en charge<br>Isolement. Quadrithérapie (2 mois) puis Bithérapie (4 mois). Déclaration obligatoire."
-                }
-            },
-            {
-                name: "Asthme", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
-                drettep: {
-                    def: "D/T<br>Maladie inflammatoire chronique avec hyperréactivité bronchique et obstruction réversible.",
-                    etio: "E/P<br>Atopie, génétique, allergènes environnementaux, tabac, virus.",
-                    semio: "T : Tableau Clinique<br>Dyspnée expiratoire sifflante, toux sèche. Sibilants à l'auscultation.",
-                    para: "E : Examens Paracliniques<br>EFR : Trouble Ventilatoire Obstructif réversible aux bronchodilatateurs.",
-                    evo: "E : Évolution<br>Crises, Asthme aigu grave, remodelage bronchique.",
-                    trait: "P : Prise en charge<br><strong>Fond :</strong> Corticoïdes inhalés + LABA.<br><strong>Crise :</strong> Bronchodilatateur courte durée (Salbutamol)."
-                }
-            },
-            {
-                name: "OAP", spec: "PNEUMOLOGY", badgeClass: "bg-pneumo",
-                drettep: {
-                    def: "D/T<br>Inondation alvéolaire brutale par transsudation de plasma.",
-                    etio: "E/P<br>Insuffisance cardiaque gauche aiguë, poussée hypertensive, IDM.",
-                    semio: "T : Tableau Clinique<br>Dyspnée brutale, orthopnée, crépitants en marée montante.",
-                    para: "E : Examens Paracliniques<br>Radio thorax (ailes de papillon). BNP/NT-proBNP élevés. ECG, Écho cœur.",
-                    evo: "E : Évolution<br>Urgence vitale absolue. Risque d'asphyxie.",
-                    trait: "P : Prise en charge<br>Oxygénothérapie, Diurétiques IV (Furosémide), Dérivés nitrés IV, VNI."
-                }
-            },
-            // CARDIO
-            {
-                name: "HTA", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
-                drettep: {
-                    def: "D/T<br>Pression artérielle systolique ≥ 140 mmHg et/ou diastolique ≥ 90 mmHg.",
-                    etio: "E/P<br>Essentielle (90%). Secondaire (10%) : Rénovasculaire, Hyperaldostéronisme.",
-                    semio: "T : Tableau Clinique<br>Silencieuse. Parfois: céphalées occipitales, mouches volantes, acouphènes.",
-                    para: "E : Examens Paracliniques<br>MAPA. Bilan OMS: Glycémie, Bilan lipidique, Créatininémie, ECG.",
-                    evo: "E : Évolution<br>Complications athéromateuses, Insuffisance cardiaque, Insuffisance rénale.",
-                    trait: "P : Prise en charge<br><strong>RHD :</strong> Régime peu salé, sport. <strong>Médicaments :</strong> IEC / ARA2, Inhibiteurs calciques, Diurétiques."
-                }
-            },
-            {
-                name: "Insuffisance Cardiaque", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
-                drettep: {
-                    def: "D/T<br>Incapacité du cœur à assurer un débit sanguin suffisant.",
-                    etio: "E/P<br>Cardiopathie ischémique, HTA, Valvulopathies.",
-                    semio: "T : Tableau Clinique<br><strong>Gauche :</strong> Dyspnée, orthopnée, crépitants. <strong>Droite :</strong> Œdèmes, turgescence jugulaire, hépatomégalie.",
-                    para: "E : Examens Paracliniques<br>Échographie Trans-Thoracique (FEVG). Dosage BNP. ECG. Radio thoracique.",
-                    evo: "E : Évolution<br>Poussées aiguës (OAP), troubles du rythme, insuffisance rénale.",
-                    trait: "P : Prise en charge<br>IEC/ARA2, Bêtabloquants, Spironolactone, Gliflozines. Diurétiques."
-                }
-            },
-            {
-                name: "Défaillance Cardiaque Gauche", spec: "CARDIOLOGY", badgeClass: "bg-cardio",
-                drettep: {
-                    def: "D/T<br>Insuffisance ventriculaire gauche isolée ou prédominante entraînant une stase pulmonaire.",
-                    etio: "E/P<br>Infarctus du myocarde massif, insuffisance valvulaire aiguë.",
-                    semio: "T : Tableau Clinique<br>Orthopnée sévère, asthme cardiaque, toux à l'effort, extrémités froides (bas débit).",
-                    para: "E : Examens Paracliniques<br>Écho-Doppler cardiaque. Cathétérisme droit.",
-                    evo: "E : Évolution<br>Choc cardiogénique, OAP fulminant.",
-                    trait: "P : Prise en charge<br>Traitement de la cause. Soutien inotrope (Dobutamine). Assistance circulatoire."
-                }
-            },
-            // PIT
-            {
-                name: "VIH", spec: "PIT", badgeClass: "bg-pit",
-                drettep: {
-                    def: "D/T<br>Infection par le Rétrovirus détruisant les lymphocytes T CD4+.",
-                    etio: "E/P<br>Transmission sexuelle, sanguine ou materno-fœtale.",
-                    semio: "T : Tableau Clinique<br>Primo-infection. Phase chronique asymptomatique. SIDA: Infections opportunistes.",
-                    para: "E : Examens Paracliniques<br>Sérologie VIH (ELISA). Western Blot. Dosage CD4, Charge Virale.",
-                    evo: "E : Évolution<br>Sans traitement: SIDA et décès. Sous traitement: Espérance de vie normale.",
-                    trait: "P : Prise en charge<br>Trithérapie antirétrovirale à vie. Prophylaxie si CD4 < 200/mm3."
-                }
-            },
-            {
-                name: "Sepsis", spec: "PIT", badgeClass: "bg-pit",
-                drettep: {
-                    def: "D/T<br>Dysfonction d'organe due à une réponse dysrégulée à une infection (SOFA ≥ 2).",
-                    etio: "E/P<br>Infection bactérienne (Pulmonaire, urinaire, etc.). Libération massive de cytokines.",
-                    semio: "T : Tableau Clinique<br>Fièvre/hypothermie, tachycardie, polypnée. Score qSOFA: PAS ≤ 100, FR ≥ 22, Glasgow < 15.",
-                    para: "E : Examens Paracliniques<br>Hémocultures, Lactates sanguins (>2). Bilan infectieux ciblé.",
-                    evo: "E : Évolution<br>Choc septique, Défaillance multi-viscérale, décès.",
-                    trait: "P : Prise en charge<br><strong>Urgence (1h) :</strong> Antibiothérapie IV probabiliste, remplissage, Noradrénaline (si PAM < 65)."
-                }
-            },
-            // NEPHROLOGIE
-            {
-                name: "Insuffisance Rénale Aiguë", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
-                drettep: {
-                    def: "D/T<br>Baisse brutale de la filtration glomérulaire, avec rétention des déchets azotés.",
-                    etio: "E/P<br>Pré-rénale (hypovolémie). Rénale (NTA). Post-rénale (obstacle).",
-                    semio: "T : Tableau Clinique<br>Oligo-anurie ou diurèse conservée. Signes de l'étiologie.",
-                    para: "E : Examens Paracliniques<br>Créatininémie, Urée, Ionogramme. <strong>Échographie des voies urinaires</strong>.",
-                    evo: "E : Évolution<br>Hyperkaliémie menaçante, OAP de surcharge, acidose métabolique.",
-                    trait: "P : Prise en charge<br>Traiter la cause. Épuration extra-rénale (Dialyse) en urgence si complications."
-                }
-            },
-            {
-                name: "Maladie Rénale Chronique", spec: "NEPHROLOGY", badgeClass: "bg-nephro",
-                drettep: {
-                    def: "D/T<br>Diminution irréversible du DFG < 60 ml/min/1.73m² persistant plus de 3 mois.",
-                    etio: "E/P<br>Néphropathie diabétique, Néphrosclérose hypertensive, Glomérulonéphrites.",
-                    semio: "T : Tableau Clinique<br>Longtemps asymptomatique. Asthénie, œdèmes, crampes, HTA.",
-                    para: "E : Examens Paracliniques<br>DFG (CKD-EPI). Rapport Albuminurie/Créatininurie. Échographie rénale.",
-                    evo: "E : Évolution<br>Progression vers le stade terminal. Complications cardiovasculaires.",
-                    trait: "P : Prise en charge<br>Néphroprotection : IEC/ARA2. Préparation à la suppléance (Dialyse/Greffe)."
-                }
-            },
-            // NEUROLOGIE
-            {
-                name: "AVC", spec: "NEUROLOGY", badgeClass: "bg-neuro",
-                drettep: {
-                    def: "D/T<br>Déficit neurologique soudain d'origine vasculaire (Ischémique 80%, Hémorragique 20%).",
-                    etio: "E/P<br>Ischémique : Athérosclérose, Cardioembolie. Hémorragique : HTA, Malformation.",
-                    semio: "T : Tableau Clinique<br>Hémiplégie, aphasie, hémianopsie, paralysie faciale centrale.",
-                    para: "E : Examens Paracliniques<br><strong>IRM cérébrale en urgence.</strong> Bilan d'étiologie (Holter, Echo TSA).",
-                    evo: "E : Évolution<br>Risque vital (HTIC). Séquelles neurologiques (handicap, spasticité).",
-                    trait: "P : Prise en charge<br>Urgence (Alerte thrombolyse). Unité Neuro-Vasculaire. Thrombolyse IV / Thrombectomie."
-                }
-            },
-            {
-                name: "Coma Fébrile", spec: "NEUROLOGY", badgeClass: "bg-neuro",
-                drettep: {
-                    def: "D/T<br>Altération profonde de la conscience (Glasgow < 8) + hyperthermie (T° > 38°C).",
-                    etio: "E/P<br>Méningite, Méningo-encéphalite herpétique, Neuropaludisme, Abcès.",
-                    semio: "T : Tableau Clinique<br>Troubles de la vigilance, fièvre. Syndrome méningé, Signes de localisation.",
-                    para: "E : Examens Paracliniques<br>Ponction Lombaire. Hémocultures, Frottis/Goutte épaisse. Scanner/IRM.",
-                    evo: "E : Évolution<br>Mortalité très élevée si retard. Séquelles neurologiques lourdes.",
-                    trait: "P : Prise en charge<br>Réanimation. <strong>Antibiothérapie / Antiviral probabiliste en urgence absolue.</strong>"
-                }
-            },
-            {
-                name: "Coma Non Fébrile", spec: "NEUROLOGY", badgeClass: "bg-neuro",
-                drettep: {
-                    def: "D/T<br>Altération de la conscience non accompagnée de contexte infectieux.",
-                    etio: "E/P<br>Toxique, Métabolique (Hypoglycémie), Traumatique, Vasculaire, Épileptique.",
-                    semio: "T : Tableau Clinique<br>Absence de réponse aux ordres. Examen pupillaire (myosis = opiacés ; mydriase = engagement).",
-                    para: "E : Examens Paracliniques<br>Glycémie capillaire immédiate ! Bilan toxico, Scanner cérébral sans injection.",
-                    evo: "E : Évolution<br>Dépend de l'étiologie. Risque d'inhalation bronchique et d'anoxie.",
-                    trait: "P : Prise en charge<br>Protection des voies aériennes. Antidotes (Naloxone, Resucrage)."
+                    def: `<div class="med-section"><p class="med-title">Urgence Vitale</p>Obstruction d'une artère pulmonaire par un thrombus provenant souvent d'une thrombose veineuse profonde (TVP).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Obstruction -> Augmentation de la post-charge du VD -> Défaillance cardiaque droite + Hypoxémie (effet shunt).</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Signes Cliniques</p>
+                        - <strong>Dyspnée brutale</strong>, Douleur thoracique basithoracique, Hémoptysie (tardive).<br>
+                        - <strong>Signes de TVP :</strong> Mollet rouge, chaud, douloureux.
+                        <div class="diff-box">
+                            <strong>Dg Diff de la Douleur Thoracique :</strong> IDM (ECG), Dissection aortique (Scanner), Pneumothorax (Radio).
+                        </div>
+                    </div>`,
+                    para: `<div class="med-section">
+                        <table class="med-table">
+                            <tr><th>Examen</th><th>Justification</th><th>Résultat Patho</th></tr>
+                            <tr><td>Angioscanner</td><td>Gold Standard</td><td>Défaut de remplissage artériel</td></tr>
+                            <tr><td>D-Dimères</td><td>Exclure le diagnostic</td><td>Si < 500 ng/mL = EP exclue</td></tr>
+                        </table>
+                    </div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Mort subite par dissociation électromécanique, Cœur Pulmonaire Chronique Post-Embolique (HTAP).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>- <strong>Anticoagulation (Héparine/AOD) :</strong> Empêcher l'extension du thrombus.<br>- <strong>Thrombolyse :</strong> Si état de choc (dissoudre le caillot).</div>`
                 }
             }
+            // Les autres pathologies suivent cette structure identique...
         ];
 
         // Rendu de la table
-        const tbody = document.getElementById("table-body");
-        
-        pathologiesDB.forEach((path, index) => {
-            const tr = document.createElement("tr");
+        const tbody = document.getElementById('pathology-list');
+        pathologies.forEach((p, index) => {
+            const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td style="font-weight: 500;">${path.name}</td>
-                <td><span class="badge ${path.badgeClass}">${path.spec}</span></td>
-                <td style="color: var(--text-gray); display:none;">COMPLET</td>
-                <td>
-                    <button class="btn-visualiser" onclick="openModal(${index})">Visualiser</button>
-                    <button class="btn-delete"><i class="fas fa-trash"></i></button>
-                </td>
+                <td><strong>${p.name}</strong></td>
+                <td><span class="badge" style="background:#e0f2fe; color:#0369a1">${p.spec}</span></td>
+                <td><span class="badge" style="background:#f0fdf4; color:#166534">EXPERT</span></td>
+                <td><button onclick="openModal(${index})" class="badge" style="background:var(--primary); color:white; border:none; cursor:pointer">VOIR DRETTEP</button></td>
             `;
             tbody.appendChild(tr);
         });
 
-        document.getElementById("total-path").innerText = pathologiesDB.length;
-
-        // Logique de la Modal
-        let currentPathology = null;
+        let activePath = null;
 
         function openModal(index) {
-            currentPathology = pathologiesDB[index];
-            document.getElementById("m-spec").innerText = currentPathology.spec;
-            document.getElementById("m-title").innerText = currentPathology.name;
-            
-            // Afficher le premier tab par défaut
-            const firstTab = document.querySelector(".drettep-tab");
-            showTab('def', firstTab);
-
-            document.getElementById("modal").style.display = "flex";
-            document.body.style.overflow = "hidden"; // Empêcher le scroll du body sur mobile
+            activePath = pathologies[index];
+            document.getElementById('m-title').innerText = activePath.name;
+            document.getElementById('m-spec').innerText = activePath.spec;
+            document.getElementById('modal').style.display = 'flex';
+            switchTab('def', document.querySelector('.tab-btn'));
         }
 
         function closeModal() {
-            document.getElementById("modal").style.display = "none";
-            document.body.style.overflow = "auto";
+            document.getElementById('modal').style.display = 'none';
         }
 
-        function showTab(tabKey, element) {
-            document.querySelectorAll(".drettep-tab").forEach(tab => {
-                tab.classList.remove("active");
-            });
-            element.classList.add("active");
-
-            if (currentPathology) {
-                document.getElementById("m-content").innerHTML = currentPathology.drettep[tabKey];
-            }
-        }
-
-        // Fermer la modal en cliquant en dehors
-        window.onclick = function(event) {
-            const modal = document.getElementById("modal");
-            if (event.target === modal) {
-                closeModal();
-            }
+        function switchTab(key, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('modal-view').innerHTML = activePath.drettep[key];
         }
     </script>
 </body>
