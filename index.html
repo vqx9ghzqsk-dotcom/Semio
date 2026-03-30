@@ -132,10 +132,11 @@
         </div>
     </div>
 
-    <script>
+    <    <script>
         const pathologies = [
+            // --- HÉMATOLOGIE (Existants) ---
             {
-                name: "Anémie (Syndrome)", spec: "HEMATOLOGIE",
+                name: "Anémie (Syndrome)", spec: "HÉMATOLOGIE",
                 drettep: {
                     def: `<div class="med-section">
                         <p class="med-title">Définition OMS</p>
@@ -146,94 +147,319 @@
                             <li>Femme enceinte (T2) : < 10,5 g/dL</li>
                         </ul>
                     </div>`,
-                    etio: `<div class="med-section">
-                        <p class="med-title">Physiopathologie</p>
-                        - <strong>Anémie centrale :</strong> Défaut de production médullaire (Carence en Fer, B12, envahissement tumoral).<br>
-                        - <strong>Anémie périphérique :</strong> Excès de perte ou destruction (Hémorragie, Hémolyse).
-                    </div>`,
-                    semio: `<div class="med-section">
-                        <p class="med-title">Sémiologie Clinique</p>
-                        - <strong>Signe cardinal :</strong> Pâleur cutanéo-muqueuse (conjonctives).<br>
-                        - <strong>Signes de lutte :</strong> Tachycardie, dyspnée d'effort.<br>
-                        - <strong>Neuro :</strong> Vertiges, céphalées (hypoxie cérébrale).
-                        <div class="diff-box">
-                            <strong>Diagnostic Différentiel de la Pâleur :</strong> État de choc (vasoconstriction), Hypoglycémie, Teint clair constitutionnel.
-                        </div>
-                    </div>`,
-                    para: `<div class="med-section">
-                        <p class="med-title">Bilan Paraclinique</p>
-                        <table class="med-table">
-                            <tr><th>Examen</th><th>Justification</th><th>Normal / Patho</th></tr>
-                            <tr><td>NFS</td><td>Diagnostic positif</td><td>Hb < 12/13 g/dL</td></tr>
-                            <tr><td>VGM</td><td>Taille des GR</td><td>80-100 fL (Micro si < 80)</td></tr>
-                            <tr><td>Réticulocytes</td><td>Mécanisme</td><td>> 120 G/L = Régénératif</td></tr>
-                        </table>
-                    </div>`,
-                    evo: `<div class="med-section">
-                        <p class="med-title">Évolution</p>
-                        - <strong>Aiguë :</strong> Choc hypovolémique (si hémorragie).<br>
-                        - <strong>Chronique :</strong> Insuffisance cardiaque à haut débit (le cœur compense l'hypoxémie par la vitesse).
-                    </div>`,
-                    trait: `<div class="med-section">
-                        <p class="med-title">Thérapeutique</p>
-                        - <strong>Fer oral (Fumafer) :</strong> Si carence martiale. <em>Justif :</em> Reconstituer le stock d'Hb.<br>
-                        - <strong>Transfusion :</strong> Si Hb < 7 g/dL ou mauvaise tolérance clinique.
-                    </div>`
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>- <strong>Centrale :</strong> Défaut de production médullaire (Carence Fer/B12).<br>- <strong>Périphérique :</strong> Excès de perte ou destruction (Hémorragie, Hémolyse).</div>`,
+                    semio: `<div class="med-section"><p class="med-title">Sémiologie</p>- Pâleur cutanéo-muqueuse, asthénie, dyspnée d'effort, tachycardie.</div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Normal / Patho</th></tr><tr><td>NFS, VGM, Réticulocytes</td><td>Permet de typer l'anémie (Micro/Macro, Régénérative ou non)</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Choc hypovolémique (aiguë), Insuffisance cardiaque (chronique).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Fer oral (carence), Transfusion (si Hb < 7 ou mal tolérée), ttt étiologique.</div>`
                 }
             },
             {
-                name: "Drépanocytose", spec: "HEMATOLOGIE",
+                name: "Drépanocytose", spec: "HÉMATOLOGIE",
                 drettep: {
-                    def: `<div class="med-section"><p class="med-title">Hémoglobinopathie</p>Maladie génétique autosomique récessive liée à la présence de l'hémoglobine S (mutation sur la chaîne bêta).</div>`,
-                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>En hypoxie, l'HbS se polymérise -> l'hématie devient rigide (faucille) -> obstruction des capillaires (Vaso-occlusion).</div>`,
-                    semio: `<div class="med-section">
-                        <p class="med-title">Sémiologie</p>
-                        - <strong>Crises Vaso-Occlusives (CVO) :</strong> Douleurs atroces (os, dos, abdomen).<br>
-                        - <strong>Ictère :</strong> Hémolyse chronique.
-                        <div class="diff-box">
-                            <strong>Dg Diff de la Douleur abdominale :</strong> Appendicite, Cholécystite (attention : les drépanocytaires font souvent des calculs biliaires).
-                        </div>
-                    </div>`,
-                    para: `<div class="med-section">
-                        <p class="med-title">Examens de Référence</p>
-                        <table class="med-table">
-                            <tr><th>Examen</th><th>Justification</th><th>Résultat</th></tr>
-                            <tr><td>Electrophorèse Hb</td><td>Diagnostic de certitude</td><td>HbS présent (80-95% chez SS)</td></tr>
-                            <tr><td>Frottis sanguin</td><td>Recherche de drépanocytes</td><td>Hématies en faucille</td></tr>
-                        </table>
-                    </div>`,
-                    evo: `<div class="med-section"><p class="med-title">Complications</p>AVC (ischémie cérébrale), Syndrome Thoracique Aigu (infarctus pulmonaire), Séquestration splénique (urgence vitale chez l'enfant).</div>`,
-                    trait: `<div class="med-section"><p class="med-title">Prise en Charge</p>- <strong>Hydratation :</strong> Diminue la viscosité.<br>- <strong>Hydroxyurée :</strong> Stimule l'Hb Foetale (anti-falciformante).</div>`
+                    def: `<div class="med-section"><p class="med-title">Hémoglobinopathie</p>Maladie génétique autosomique récessive (HbS).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Polymérisation de l'HbS en hypoxie -> falciformation -> Vaso-occlusion.</div>`,
+                    semio: `<div class="med-section"><p class="med-title">Sémiologie</p>Crises Vaso-Occlusives (CVO) douloureuses, Ictère (hémolyse).</div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Résultat Patho</th></tr><tr><td>Electrophorèse Hb</td><td>Présence HbS</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Syndrome Thoracique Aigu, AVC, Ostéonécrose.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Hydratation, Antalgiques paliers 1 à 3, Hydroxyurée, Transfusion/Échange transfusionnel.</div>`
                 }
             },
+
+            // --- HÉPATO-GASTRO-ENTÉROLOGIE ---
+            {
+                name: "Gastro-entérite Aiguë", spec: "HÉPATO-GASTRO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Inflammation de la muqueuse gastrique et intestinale d'apparition brutale.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Virale (70%) :</strong> Rotavirus, Norovirus.<br>- <strong>Bactérienne :</strong> Salmonella, Shigella, E. Coli, Campylobacter.<br>- <strong>Parasitaire :</strong> Giardia, Amibes.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Diarrhée (aqueuse ou glairo-sanglante), vomissements, douleurs abdominales, fièvre.
+                        <div class="diff-box"><strong>Dg Différentiel :</strong> Appendicite aiguë, TIAC, Paludisme (zone endémique).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Indication</th></tr><tr><td>Coproculture / EPS</td><td>Si syndrome dysentérique ou persistance > 3j</td></tr><tr><td>Ionogramme sanguin</td><td>Recherche de troubles hydro-électrolytiques</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Déshydratation aiguë, Choc hypovolémique, Insuffisance rénale aiguë fonctionnelle.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Réhydratation (SRO per os ou Ringer Lactate IV), Antisécrétoires, ATB si signes d'invasion (ex: Azithromycine).</div>`
+                }
+            },
+            {
+                name: "Hémorragie Digestive", spec: "HÉPATO-GASTRO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Saignement extériorisé ou non, provenant du tube digestif (Haute : en amont de l'angle de Treitz ; Basse : en aval).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Haute :</strong> Ulcère gastro-duodénal, Rupture de varices œsophagiennes (RVO), Gastrite érosive.<br>- <strong>Basse :</strong> Diverticulose, Tumeurs colorectales, Angiodysplasies, Hémorroïdes.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        - <strong>Haute :</strong> Hématémèse (sang rouge vomi), Méléna (sang noir digéré).<br>
+                        - <strong>Basse :</strong> Rectorragies (sang rouge anal).
+                        <div class="diff-box"><strong>Dg Différentiel :</strong> Hémoptysie (sang craché, aéré), Épistaxis déglutie, Coloration par aliments (betteraves) ou fer.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Justification</th></tr><tr><td>Endoscopie digestive haute</td><td>Diagnostique et thérapeutique (pose de clips, ligature). Urgence !</td></tr><tr><td>Coloscopie</td><td>Pour les saignements bas.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Choc hémorragique, Récidive, Décès.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>2 Voies veineuses périphériques, Remplissage, Transfusion, IPP IV (si non cirrhotique) ou Octréotide (si RVO), Hémostase endoscopique.</div>`
+                }
+            },
+            {
+                name: "Hépatalgie & Hépatomégalie", spec: "HÉPATO-GASTRO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Hépatalgie : Douleur de l'hypochondre droit liée à la mise en tension de la capsule de Glisson. Hépatomégalie : Flèche hépatique > 12 cm.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Distension rapide de la capsule (inflammation, stase sanguine, tumeur).</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Douleur HCD irradiant vers l'épaule droite, parfois rythmée par l'effort (foie cardiaque).
+                        <div class="diff-box">
+                            <strong>Diagnostic Différentiel des Hépatomégalies :</strong><br>
+                            🔴 <strong>Sensibles (douloureuses) :</strong> Foie cardiaque (reflux hépato-jugulaire), Hépatite aiguë, Abcès amibien/à pyogènes, CHC en poussée.<br>
+                            🔵 <strong>Non sensibles (indolores) :</strong> Cirrhose (bord inférieur tranchant), Stéatose, Foie tumoral métastatique (nodulaire, dur), Kyste biliaire.
+                        </div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Recherche</th></tr><tr><td>Échographie abdominale</td><td>Taille du foie, homogénéité, voies biliaires.</td></tr><tr><td>Bilan hépatique</td><td>ASAT/ALAT, GGT, PAL, Bilirubine, TP.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Dépend de l'étiologie (Insuffisance hépato-cellulaire, rupture d'abcès).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Étiologique. Antalgiques prudents (éviter le Paracétamol et les AINS si insuffisance hépatique sévère).</div>`
+                }
+            },
+            {
+                name: "Ascite", spec: "HÉPATO-GASTRO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Épanchement liquide intracavitaire péritonéal non sanglant.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Transsudat (Prot < 25g/L) :</strong> Cirrhose (HTP), Insuffisance Cardiaque Droite, Syndrome néphrotique.<br>- <strong>Exsudat (Prot > 25g/L) :</strong> Carcinose péritonéale, Tuberculose péritonéale.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Augmentation du volume de l'abdomen, matité déclive et mobile sur les flancs, signe du glaçon, pli de la peau (si tendue).
+                        <div class="diff-box"><strong>Dg Différentiel :</strong> Globe vésical, Grossesse, Kyste ovarien géant, Météorisme (les 3 F : Fluid, Fat, Feces, Flatus, Fetus).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Analyse</th></tr><tr><td>Ponction exploratrice</td><td>Biochimie (protéines), Cytologie, Bactériologie. Indispensable !</td></tr><tr><td>Échographie</td><td>Confirme l'épanchement dès 100ml.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Complications</p>Infection du liquide d'ascite (urgence vitale), hernie ombilicale, dyspnée de compression.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Régime désodé, Diurétiques (Spironolactone +/- Furosémide), Ponction évacuatrice avec compensation par Albumine si > 5L retirés.</div>`
+                }
+            },
+
+            // --- PNEUMOLOGIE ---
             {
                 name: "Embolie Pulmonaire", spec: "PNEUMOLOGIE",
                 drettep: {
-                    def: `<div class="med-section"><p class="med-title">Urgence Vitale</p>Obstruction d'une artère pulmonaire par un thrombus provenant souvent d'une thrombose veineuse profonde (TVP).</div>`,
-                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Obstruction -> Augmentation de la post-charge du VD -> Défaillance cardiaque droite + Hypoxémie (effet shunt).</div>`,
+                    def: `<div class="med-section"><p class="med-title">Urgence Vitale</p>Obstruction d'une artère pulmonaire par un thrombus (souvent d'une TVP).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Obstruction -> Augmentation de la post-charge du VD -> Cœur pulmonaire aigu + Hypoxémie. Triade de Virchow : stase, lésion endothéliale, hypercoagulabilité.</div>`,
                     semio: `<div class="med-section">
-                        <p class="med-title">Signes Cliniques</p>
-                        - <strong>Dyspnée brutale</strong>, Douleur thoracique basithoracique, Hémoptysie (tardive).<br>
-                        - <strong>Signes de TVP :</strong> Mollet rouge, chaud, douloureux.
-                        <div class="diff-box">
-                            <strong>Dg Diff de la Douleur Thoracique :</strong> IDM (ECG), Dissection aortique (Scanner), Pneumothorax (Radio).
-                        </div>
+                        <p class="med-title">Sémiologie</p>
+                        Dyspnée brutale, douleur basi-thoracique, toux, tachycardie. Signes de TVP.
+                        <div class="diff-box"><strong>Dg Diff :</strong> IDM, Dissection aortique, Pneumothorax, Pneumonie.</div>
                     </div>`,
-                    para: `<div class="med-section">
-                        <table class="med-table">
-                            <tr><th>Examen</th><th>Justification</th><th>Résultat Patho</th></tr>
-                            <tr><td>Angioscanner</td><td>Gold Standard</td><td>Défaut de remplissage artériel</td></tr>
-                            <tr><td>D-Dimères</td><td>Exclure le diagnostic</td><td>Si < 500 ng/mL = EP exclue</td></tr>
-                        </table>
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Résultat Patho</th></tr><tr><td>Angioscanner</td><td>Défaut de remplissage artériel (Gold Standard).</td></tr><tr><td>ECG</td><td>S1Q3, Tachycardie, BBD.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Choc cardiogénique, Mort subite, Cœur Pulmonaire Chronique.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Oxygénothérapie, Anticoagulation curative (HBPM/AOD), Thrombolyse si choc (instabilité hémodynamique).</div>`
+                }
+            },
+            {
+                name: "Tuberculose Pulmonaire", spec: "PNEUMOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Infection bactérienne causée par Mycobacterium tuberculosis (Bacille de Koch).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>Transmission strictement interhumaine par voie aérienne (gouttelettes de Flügge). Granulome épithélio-giganto-cellulaire avec nécrose caséeuse.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Toux chronique (> 3 semaines), Hémoptysie, 3A (Asthénie, Anorexie, Amaigrissement), Sueurs nocturnes, Fébrilité vespérale.
+                        <div class="diff-box"><strong>Dg Diff :</strong> Cancer bronchique, Pneumopathie bactérienne, Abcès pulmonaire.</div>
                     </div>`,
-                    evo: `<div class="med-section"><p class="med-title">Risques</p>Mort subite par dissociation électromécanique, Cœur Pulmonaire Chronique Post-Embolique (HTAP).</div>`,
-                    trait: `<div class="med-section"><p class="med-title">Traitement</p>- <strong>Anticoagulation (Héparine/AOD) :</strong> Empêcher l'extension du thrombus.<br>- <strong>Thrombolyse :</strong> Si état de choc (dissoudre le caillot).</div>`
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Recherche</th></tr><tr><td>Radio Thorax</td><td>Infiltrats, cavernes (souvent aux sommets).</td></tr><tr><td>Bactériologie (Crachats)</td><td>Examen direct (BAAR) et culture ou GeneXpert.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Dissémination miliaire, Méningite tuberculeuse, Détresse respiratoire. Guérison sous TTT.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Quadrithérapie (RHZE) pdt 2 mois puis Bithérapie (RH) pdt 4 mois. Isolement respiratoire. (R: Rifampicine, H: Isoniazide, Z: Pyrazinamide, E: Ethambutol).</div>`
+                }
+            },
+            {
+                name: "Asthme", spec: "PNEUMOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Maladie inflammatoire chronique des voies aériennes caractérisée par une hyperréactivité bronchique et une obstruction réversible.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Physiopathologie</p>Bronchospasme + Œdème muqueux + Hypersécrétion de mucus. Terrain atopique fréquent.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Crises de dyspnée expiratoire sifflante, toux quinteuse, oppression thoracique. Souvent nocturne ou au réveil.
+                        <div class="diff-box"><strong>Dg Diff :</strong> BPCO (obstruction non réversible), OAP (asthme cardiaque - crépitants), Embolie pulmonaire.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Résultat Patho</th></tr><tr><td>EFR (Spirométrie)</td><td>Trouble Ventilatoire Obstructif (TVO) réversible sous Ventoline.</td></tr><tr><td>DEP (Peak Flow)</td><td>Surveillance de la sévérité.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Asthme aigu grave (AAG - urgence absolue), Remodelage bronchique.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>- <strong>Crise :</strong> Bronchodilatateur courte action (Salbutamol).<br>- <strong>Fond :</strong> Corticoïdes inhalés (CSI) +/- LABA.</div>`
+                }
+            },
+            {
+                name: "OAP (Œdème Aigu du Poumon)", spec: "PNEUMOLOGIE", // Souvent mixte Cardio/Pneumo
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Inondation brutale des alvéoles pulmonaires par du plasma sanguin.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Hémodynamique (Cardiogénique) :</strong> Insuffisance Cardiaque Gauche, Poussée hypertensive.<br>- <strong>Lésionnel (SDRA) :</strong> Infection, toxiques.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Dyspnée aiguë, orthopnée, toux avec expectorations mousseuses saumonées. Auscultation : Râles crépitants en "marée montante".
+                        <div class="diff-box"><strong>Dg Diff :</strong> Asthme, Exacerbation de BPCO, Pneumonie sévère.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Signes</th></tr><tr><td>Radio Thorax</td><td>Opacités floconneuses bilatérales en ailes de papillon.</td></tr><tr><td>BNP / NT-proBNP</td><td>Élevé si origine cardiaque.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Asphyxie, Arrêt cardiorespiratoire.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement (Cardiogénique)</p>Position assise, Oxygène, Diurétiques de l'anse IV (Lasilix), Dérivés nitrés IV. Pression Positive Continue (VNI).</div>`
+                }
+            },
+
+            // --- CARDIOLOGIE ---
+            {
+                name: "Hypertension Artérielle (HTA)", spec: "CARDIOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition OMS</p>Pression Artérielle Systolique (PAS) ≥ 140 mmHg et/ou Diastolique (PAD) ≥ 90 mmHg, mesurée au cabinet (ou > 135/85 en automesure).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Essentielle (95%) :</strong> Facteurs génétiques, sel, âge, sédentarité, obésité.<br>- <strong>Secondaire (5%) :</strong> Sténose artère rénale, Phéochromocytome, Hyperaldostéronisme.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Souvent asymptomatique ("tueur silencieux"). Céphalées occipitales matinales, acouphènes, phosphènes, épistaxis.
+                        <div class="diff-box"><strong>Urgence Hypertensive :</strong> HTA sévère + Souffrance d'organe cible (OAP, Dissection, Encephalopathie).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Bilan Retentissement</p><table class="med-table"><tr><th>Examen</th><th>Cible</th></tr><tr><td>ECG / Echo Cœur</td><td>Hypertrophie Ventriculaire Gauche (HVG).</td></tr><tr><td>Créatinine, BU</td><td>Néphropathie hypertensive, Protéinurie.</td></tr><tr><td>Fond d'Oeil</td><td>Rétinopathie.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Complications</p>AVC, IDM, Insuffisance Rénale Chronique, Insuffisance Cardiaque.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Règles hygiéno-diététiques. Traitement pharmacologique (IEC, ARA2, Inhibiteurs calciques, Diurétiques thiazidiques).</div>`
+                }
+            },
+            {
+                name: "Insuffisance Cardiaque (IC)", spec: "CARDIOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Incapacité du cœur à assurer un débit sanguin suffisant pour répondre aux besoins métaboliques des organes.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>Cardiopathie ischémique (post-IDM), HTA, Valvulopathies, Cardiomyopathie dilatée/hypertrophique.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie (Chroniques)</p>
+                        - <strong>Gauche :</strong> Dyspnée d'effort, orthopnée, crépitants, B3.<br>
+                        - <strong>Droite :</strong> Turgescence jugulaire, reflux hépato-jugulaire, hépatomégalie, OMI (Œdèmes des Membres Inférieurs).
+                        <div class="diff-box"><strong>Classification NYHA :</strong> Stade I (aucun signe) à Stade IV (dyspnée au repos).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Résultat Patho</th></tr><tr><td>Échographie Transthoracique</td><td>FEVG abaissée (< 40%) ou préservée, dilatation des cavités.</td></tr><tr><td>BNP</td><td>Élevé (marqueur de distension ventriculaire).</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Décompensation aiguë (OAP, Choc cardiogénique), Troubles du rythme, Décès.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement (Fond)</p>Bêtabloquants, IEC/ARA2/ARNI (Entresto), Antagonistes de l'aldostérone, iSGLT2 (Dapagliflozine). Diurétiques pour la congestion.</div>`
+                }
+            },
+            {
+                name: "Décompensation Cardiaque Globale", spec: "CARDIOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Exacerbation aiguë associant les signes d'insuffisance cardiaque gauche (pulmonaire) et droite (systémique).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Facteurs déclenchants</p>Écart de régime (sel), Rupture de traitement, Arythmie (FA), Infection, Ischémie myocardique.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        - <strong>Congestion amont :</strong> OAP (crépitants, dyspnée de repos), OMI massifs remontant jusqu'aux lombes, Ascite, Turgescence jugulaire.<br>
+                        - <strong>Bas débit aval :</strong> Asthénie, oligurie, confusion, extrémités froides (signes de gravité).
+                        <div class="diff-box"><strong>Profil hémodynamique :</strong> Chaud/Humide (fréquent), Froid/Humide (choc cardiogénique).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique en urgence</p><table class="med-table"><tr><th>Examen</th><th>Urgence</th></tr><tr><td>Gaz du sang</td><td>Hypoxémie, Acidose (si choc).</td></tr><tr><td>Troponine, BNP, Ionogramme</td><td>Infarctus associé, fonction rénale (IRA fonctionnelle).</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Pronostic</p>Risque de décès par choc cardiogénique ou FV/TV. Nécessite une hospitalisation d'urgence.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement (Aigu)</p>Oxygène (ou VNI si OAP), Diurétiques IV fortes doses (Furosémide), Vasodilatateurs (Nitrés) si TA > 110mmHg, Inotropes (Dobutamine) si choc.</div>`
+                }
+            },
+
+            // --- PATHOLOGIE INFECTIEUSE ET TROPICALE (PIT) ---
+            {
+                name: "Infection à VIH", spec: "MALADIES INFECTIEUSES",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Infection rétrovirale par le Virus de l'Immunodéficience Humaine détruisant les lymphocytes T CD4.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Transmission</p>Sexuelle (majoritaire), Sanguine (UDVI, transfusion), Materno-fœtale.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        - <strong>Primo-infection :</strong> Syndrome pseudo-mononucléosique (fièvre, adénopathies, rash, ulcérations muqueuses).<br>
+                        - <strong>Stade SIDA (CD4 < 200) :</strong> Infections opportunistes (Pneumocystose, Toxoplasmose cérébrale, Candidose œsophagienne) et Tumeurs (Sarcome de Kaposi).
+                        <div class="diff-box"><strong>Dg Diff Primo-infection :</strong> EBV (MNI), CMV, Syphilis secondaire.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Diagnostic & Suivi</p><table class="med-table"><tr><th>Examen</th><th>Normal / Patho</th></tr><tr><td>Sérologie ELISA mixte</td><td>Dépistage. Confirmation par Western Blot (ou test de 2ème intention).</td></tr><tr><td>Charge virale (ARN VIH) & Taux CD4</td><td>Suivi de l'efficacité thérapeutique. Objectif : CV indétectable, CD4 > 500.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Maladie chronique sous traitement, espérance de vie quasi normale. Sans traitement : SIDA et décès par infection/tumeur.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Trithérapie antirétrovirale (ARV) à vie : 2 INTI (ex: Ténofovir + Emtricitabine) + 1 INI (Dolutégravir) ou INNTI ou IP. Prophylaxie des IO si CD4 très bas (Bactrim).</div>`
+                }
+            },
+            {
+                name: "Sepsis & Choc Septique", spec: "RÉANIMATION / INFECTIOLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition (Sepsis-3)</p>Dysfonction d'organe menaçant le pronostic vital, causée par une réponse dérégulée de l'hôte à une infection.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>Bactéries à Gram négatif (E. coli, Pseudomonas), Gram positif (Staphylocoque, Pneumocoque), Fungi, Virus. Foyers : pulmonaire, urinaire, digestif, cathéter.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Fièvre (ou hypothermie), Frissons, Tachycardie, Tachypnée (Score qSOFA : FR ≥ 22, Glasgow < 15, PAS ≤ 100).
+                        <div class="diff-box"><strong>Choc Septique :</strong> Sepsis + besoin de vasopresseurs pour PAM ≥ 65 mmHg + Lactates > 2 mmol/L malgré un remplissage adéquat.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique (Urgence)</p><table class="med-table"><tr><th>Examen</th><th>Recherche</th></tr><tr><td>Hémocultures</td><td>Avant toute antibiothérapie (si possible dans l'heure).</td></tr><tr><td>Lactates sanguins</td><td>Marqueur d'hypoperfusion tissulaire.</td></tr><tr><td>Bilan infectieux ciblé</td><td>ECBU, Radio thorax, Ponction lombaire selon le point d'appel.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Défaillance multiviscérale (CIVD, SDRA, Insuffisance Rénale Aiguë), Décès (mortalité élevée, 40% pour le choc).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement (Sepsis Six - Première Heure)</p>1. Oxygène. 2. Hémocultures. 3. Antibiothérapie probabiliste large spectre IV. 4. Remplissage (Cristalloïdes 30ml/kg). 5. Dosages Lactates. 6. Surveillance diurèse/constantes. (Noradrénaline si choc).</div>`
+                }
+            },
+
+            // --- NÉPHROLOGIE ---
+            {
+                name: "Insuffisance Rénale Aiguë (IRA)", spec: "NÉPHROLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition (KDIGO)</p>Baisse brutale de la filtration glomérulaire (élévation de la créatinine ≥ 26,5 µmol/L en 48h ou x1,5 en 7 jours) +/- oligurie.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Classification</p>- <strong>Pré-rénale (Fonctionnelle) :</strong> Hypoperfusion (Déshydratation, Choc, IEC, AINS).<br>- <strong>Intra-rénale (Organique) :</strong> NTA (Nécrose Tubulaire Aiguë par ischemie/toxique), NTI (Allergie), Glomérulonéphrite (Lupus).<br>- <strong>Post-rénale (Obstructive) :</strong> Lithiase bilatérale, Hypertrophie prostatique.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Oligo-anurie (Diurèse < 500 ml/24h) ou diurèse conservée. Signes d'hyperkaliémie (troubles du rythme).
+                        <div class="diff-box"><strong>Diagnostic Différentiel (IRC vs IRA) :</strong> IRA = Reins de taille normale à l'échographie, pas d'anémie chronique, pas d'hypocalcémie chronique (sauf rhabdomyolyse).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Justification</th></tr><tr><td>Échographie rénale</td><td>Éliminer un obstacle (Dilatation des cavités = Post-rénale).</td></tr><tr><td>Ionogramme Sanguin/Urinaire</td><td>Urgence = Hyperkaliémie. Index urinaire (Na/K) pour différencier Fonctionnelle vs Organique.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Complications</p>Hyperkaliémie menaçante (arrêt cardiaque), OAP, Acidose métabolique. Séquelles possibles (IRC).</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Étiologique ! (Lever l'obstacle, Remplir, Arrêter les néphrotoxiques). Épuration extrarénale (Dialyse) si indications de sauvetage (OAP résistant, K+ très élevé).</div>`
+                }
+            },
+            {
+                name: "Maladie Rénale Chronique (MRC)", spec: "NÉPHROLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Baisse progressive et irréversible de la fonction rénale : DFG (Débit de Filtration Glomérulaire) < 60 ml/min/1.73m² pendant plus de 3 mois.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>Diabète (Néphropathie diabétique - 1ère cause), HTA (Néphroangiosclérose), Glomérulonéphrites chroniques, Polykystose rénale autosomique dominante (PKRAD).</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Longtemps asymptomatique. Asthénie (anémie), Nycturie, Œdèmes, Prurit, Crampes, Teint terreux, HTA résistante.
+                        <div class="diff-box"><strong>Stades DFG :</strong> 1: Normal, 2: Légère (60-89), 3a/3b: Modérée/Sévère, 4: Pré-terminale (15-29), 5: Terminale (< 15).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Bilan de Retentissement</p><table class="med-table"><tr><th>Examen</th><th>Trouble Associé</th></tr><tr><td>NFS</td><td>Anémie normocytaire arégénérative (Défaut d'EPO).</td></tr><tr><td>Bilan Phosphocalcique</td><td>Hypocalcémie, Hyperphosphatémie, Hyperparathyroïdie secondaire.</td></tr><tr><td>Protéinurie des 24h / BU</td><td>Évaluation de l'atteinte glomérulaire (Microalbuminurie).</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Insuffisance rénale terminale, Risque cardiovasculaire majeur (calcifications vasculaires), Ostéodystrophie rénale.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>Néphroprotection (Contrôle strict TA, IEC/ARA2, baisse protéinurie). Traiter complications (EPO, vit D, chélateurs phosphore). Stade 5 : Dialyse ou Transplantation.</div>`
+                }
+            },
+
+            // --- NEUROLOGIE ---
+            {
+                name: "Accident Vasculaire Cérébral (AVC)", spec: "NEUROLOGIE",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Urgence Absolue</p>Déficit neurologique focal d'apparition soudaine lié à une lésion vasculaire cérébrale (Ischémique - 80% ou Hémorragique - 20%).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Ischémique (Infarctus) :</strong> Athérosclérose (carotide), Cardioembolie (FA), Maladie des petites artères (lacunes liées à l'HTA).<br>- <strong>Hémorragique :</strong> HTA, Rupture d'anévrisme, Angiopathie amyloïde.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie ("VITE/FAST")</p>
+                        Apparition brutale de : Hémiplégie, Hémianesthésie, Aphasie (atteinte hémisphère dominant), Hémianopsie, Ataxie.
+                        <div class="diff-box"><strong>Dg Différentiel :</strong> Hypoglycémie (toujours faire un HGT !), Crise d'épilepsie (déficit post-critique de Todd), Migraine avec aura, Tumeur (mais installation progressive).</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Imagerie en Urgence</p><table class="med-table"><tr><th>Examen</th><th>Objectif</th></tr><tr><td>IRM Cérébrale (Diffusion/FLAIR/T2*/Angio)</td><td>Gold standard. Confirme l'ischémie très précocement, élimine le saignement.</td></tr><tr><td>Scanner cérébral sans injection</td><td>Si IRM indisponible. Élimine l'hémorragie avant thrombolyse.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Engagement (œdème cérébral), Transformation hémorragique, Récidive, Handicap séquellaire moteur/cognitif.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement (Filière AVC)</p>- <strong>Ischémique :</strong> Thrombolyse IV (si < 4h30) et/ou Thrombectomie mécanique (si < 6h, parfois plus). Aspirine.<br>- <strong>Hémorragique :</strong> Contrôle strict de la TA, correction des troubles de coagulation. Neurochirurgie si indication.</div>`
+                }
+            },
+            {
+                name: "Coma Fébrile", spec: "NEURO / INFECTIO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Altération prolongée de l'état de conscience (Glasgow < 8) non réversible par les stimulations, associée à une température > 38°C (ou parfois hypothermie).</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie (Infections du SNC prioritaires)</p>Méningite bactérienne (Pneumocoque, Méningocoque, Listeria), Méningo-encéphalite herpétique, Paludisme grave (neuropaludisme), Abcès cérébral, Sepsis grave.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie</p>
+                        Syndrome méningé (Raideur de nuque, photophobie, vomissements), Signes de localisation (Hémiplégie, aphasie -> Encéphalite), Crises convulsives.
+                        <div class="diff-box"><strong>Attention :</strong> Purpura fulminans (Méningocoque) = Urgence absolue, C3G IV ou IM immédiate avant tout examen.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique</p><table class="med-table"><tr><th>Examen</th><th>Indications</th></tr><tr><td>Ponction Lombaire (PL)</td><td>Analyse LCR (bactério, chimie, PCR Herpès). Contre-indiquée si signes d'engagement.</td></tr><tr><td>TDM Cérébral (Scanner)</td><td>À réaliser avant la PL si signes de localisation neurologique ou crises focales.</td></tr><tr><td>Goutte Épaisse / Frottis</td><td>Recherche d'hématozoaires (si séjour zone endémique).</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Risques</p>Hypertension Intracrânienne (HIC), Engagement cérébral, Choc septique, Décès.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement Urgence</p>Antibiothérapie probabiliste large (C3G + Amoxicilline) ET Antiviral (Aciclovir) IV dès la suspicion sans attendre les résultats de la PL. Traitement symptomatique (Anti-épileptiques, Réanimation).</div>`
+                }
+            },
+            {
+                name: "Coma Non Fébrile", spec: "NEUROLOGIE / TOXICO",
+                drettep: {
+                    def: `<div class="med-section"><p class="med-title">Définition</p>Altération de la conscience (Glasgow < 8) sans contexte infectieux patent ni fièvre initiale.</div>`,
+                    etio: `<div class="med-section"><p class="med-title">Étiologie</p>- <strong>Toxique :</strong> Médicaments (BZD, Opioïdes), Alcool, CO.<br>- <strong>Métabolique :</strong> Hypoglycémie sévère, Hyponatrémie, Encéphalopathie hépatique, Urémie.<br>- <strong>Neurologique :</strong> AVC massif, Hémorragie méningée/intracérébrale, Épilepsie (État de mal non convulsivant), Tumeur.</div>`,
+                    semio: `<div class="med-section">
+                        <p class="med-title">Sémiologie et Examen</p>
+                        - <strong>Toxique :</strong> Myosis (Opioïdes), Haleine, Traces de piqures.<br>
+                        - <strong>Neuro :</strong> Asymétrie faciale, déviation conjuguée des yeux, Babinski (Signes de focalisation = lésion structurale).
+                        <div class="diff-box"><strong>Évaluation indispensable :</strong> Score de Glasgow (Ouverture des yeux, Réponse Verbale, Réponse Motrice). Si ≤ 8 : Intubation oro-trachéale de protection.</div>
+                    </div>`,
+                    para: `<div class="med-section"><p class="med-title">Paraclinique Systématique</p><table class="med-table"><tr><th>Examen</th><th>Recherche</th></tr><tr><td>Dextro (HGT) au lit du malade</td><td>Éliminer d'emblée l'Hypoglycémie (Glycémie capillaire).</td></tr><tr><td>TDM cérébral sans injection</td><td>Éliminer une hémorragie, tumeur ou AVC ischémique étendu.</td></tr><tr><td>Bilan toxico et Ionogramme</td><td>Sang et urines, Natrémie, Calcémie, Urée/Créatinine, Bilan hépatique.</td></tr></table></div>`,
+                    evo: `<div class="med-section"><p class="med-title">Évolution</p>Dépend de la cause. Rhabdomyolyse si décubitus prolongé, Pneumopathie d'inhalation.</div>`,
+                    trait: `<div class="med-section"><p class="med-title">Traitement</p>- <strong>A, B, C :</strong> Libération des voies aériennes, Intubation si GCS ≤ 8.<br>- <strong>Antidotes :</strong> Naloxone (Opioïdes), Flumazénil (BZD - attention contre-indications).<br>- <strong>G30% IV :</strong> Si hypoglycémie confirmée.</div>`
                 }
             }
-            // Les autres pathologies suivent cette structure identique...
         ];
+        
+        // --- RENDU ET GESTION (Inchangés) ---
 
-        // Rendu de la table
         const tbody = document.getElementById('pathology-list');
         pathologies.forEach((p, index) => {
             const tr = document.createElement('tr');
