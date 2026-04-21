@@ -270,11 +270,13 @@
             background: #fff;
             margin-top: 20px;
             box-shadow: var(--shadow-sm);
+            margin-bottom: 40px;
         }
-        table { width: 100%; border-collapse: collapse; min-width: 900px; }
-        th { background: #f8fafc; padding: 24px; text-align: left; font-size: 11px; font-weight: 800; color: var(--text-sec); text-transform: uppercase; border-bottom: 2px solid var(--border); letter-spacing: 1px; }
-        td { padding: 20px 24px; border-bottom: 1px solid var(--border); font-size: 15px; }
-        tr:hover td { background: #fcfdfe; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: #f8fafc; padding: 18px; text-align: left; font-size: 11px; font-weight: 800; color: var(--text-sec); text-transform: uppercase; border-bottom: 2px solid var(--border); letter-spacing: 1px; }
+        td { padding: 15px 18px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        tr:nth-child(even) { background-color: #fcfdfe; }
+        .row-total { font-weight: bold; background: var(--primary-light) !important; }
 
         /* MODALS */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); padding: 20px; }
@@ -298,6 +300,10 @@
         /* BACK TO TOP */
         #backToTop { display:none; position:fixed; bottom:30px; right:30px; width:50px; height:50px; border-radius:50%; background:var(--primary); color:white; border:none; box-shadow:var(--shadow-lg); cursor:pointer; z-index:1000; font-size:20px; transition:var(--transition); }
         #backToTop:hover { transform: scale(1.1); background: var(--primary-dark); }
+
+        /* STATS SPECIFIC */
+        .stat-card-title { font-size: 14px; font-weight: 800; color: var(--primary-dark); margin: 30px 0 15px 0; display: flex; align-items: center; gap: 10px; }
+        .stat-card-title i { font-style: normal; }
 
         /* MOBILE OPTIMIZATION */
         @media (max-width: 1024px) {
@@ -479,10 +485,11 @@
     </section>
 
     <section id="tab-3" class="content-area">
-        <div class="section-title"><span>📈 Aperçu Statistique</span></div>
-        <div class="field-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="section-title"><span>📈 ANALYSE STATISTIQUE</span></div>
+        
+        <div class="field-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 40px;">
             <div class="detail-item" style="text-align:center;">
-                <small>Total Fiches</small>
+                <small>Échantillon (N)</small>
                 <div id="stat-total" style="font-size:32px; font-weight:800; color:var(--primary); margin-top:10px;">0</div>
             </div>
             <div class="detail-item" style="text-align:center;">
@@ -490,18 +497,47 @@
                 <div id="stat-age" style="font-size:32px; font-weight:800; color:var(--accent); margin-top:10px;">0</div>
             </div>
             <div class="detail-item" style="text-align:center;">
-                <small>Ratio Sexe (M/F)</small>
-                <div id="stat-ratio" style="font-size:32px; font-weight:800; color:var(--primary-dark); margin-top:10px;">0:0</div>
+                <small>Sexe Ratio (M/F)</small>
+                <div id="stat-ratio" style="font-size:32px; font-weight:800; color:var(--primary-dark); margin-top:10px;">0</div>
             </div>
         </div>
+
+        <div class="section-title"><span>1. ANALYSE DE FRÉQUENCE</span></div>
         
-        <div id="stat-tables-container" style="margin-top:40px;">
-            <div style="padding:40px; background:#f8fafc; border-radius:var(--radius-md); text-align:center; border:2px dashed var(--border);">
-                <div style="font-size:40px; margin-bottom:20px;">📊</div>
-                <h3 style="margin:0; color:var(--text-main);">Génération des matrices en cours...</h3>
-                <p style="color:var(--text-sec);">Les tableaux épidémiologiques s'afficheront dès qu'une fiche sera enregistrée.</p>
-            </div>
-        </div>
+        <div class="stat-card-title"><i>📊</i> Répartition par Âge et Sexe</div>
+        <div class="data-table-container"><table id="table-age-sexe"></table></div>
+
+        <div class="stat-card-title"><i>📊</i> Motif de Consultation</div>
+        <div class="data-table-container"><table id="table-motif"></table></div>
+
+        <div class="stat-card-title"><i>📊</i> Indication de l'extraction</div>
+        <div class="data-table-container"><table id="table-indication"></table></div>
+
+        <div class="stat-card-title"><i>📊</i> Type d'extraction</div>
+        <div class="data-table-container"><table id="table-type-extraction"></table></div>
+
+        <div class="stat-card-title"><i>📊</i> Complications</div>
+        <div class="data-table-container"><table id="table-complications"></table></div>
+
+        <div class="section-title" style="margin-top:60px;"><span>2. ANALYSE DE CROISEMENT (Bivariée)</span></div>
+
+        <div class="stat-card-title"><i>🔄</i> Âge + Indications</div>
+        <div class="data-table-container"><table id="cross-age-indication"></table></div>
+
+        <div class="stat-card-title"><i>🔄</i> Indications + Type d'extraction</div>
+        <div class="data-table-container"><table id="cross-indication-type"></table></div>
+
+        <div class="stat-card-title"><i>🔄</i> Dent concernée + Indications</div>
+        <div class="data-table-container"><table id="cross-dent-indication"></table></div>
+
+        <div class="stat-card-title"><i>🔄</i> Type d'extraction + Complications</div>
+        <div class="data-table-container"><table id="cross-type-complication"></table></div>
+
+        <div class="stat-card-title"><i>🔄</i> Examen complémentaire + Type d'extraction</div>
+        <div class="data-table-container"><table id="cross-exam-type"></table></div>
+
+        <div class="stat-card-title"><i>🔄</i> Traitement médical + Complications</div>
+        <div class="data-table-container"><table id="cross-traitement-complication"></table></div>
     </section>
 
     <section id="tab-4" class="content-area">
@@ -514,8 +550,8 @@
             <div class="pulse"></div>
         </div>
         <div style="margin-top:40px; display:grid; gap:20px;">
-            <button class="check-pill" style="justify-content:center;" onclick="window.print()">🖨️ Imprimer la page</button>
-            <button class="check-pill" style="justify-content:center;" onclick="alert('Exportation CSV demandée...')">📥 Exporter en CSV</button>
+            <button class="check-pill" style="justify-content:center;" onclick="window.print()">🖨️ Imprimer le rapport</button>
+            <button class="check-pill" style="justify-content:center;" onclick="exportToCSV()">📥 Exporter la Matrice (CSV)</button>
         </div>
     </section>
 </main>
@@ -583,7 +619,7 @@
             enqueteur: document.getElementById('enqueteur').value,
             service: document.getElementById('service').value,
             date: document.getElementById('date_consult').value,
-            age: document.getElementById('age').value,
+            age: parseInt(document.getElementById('age').value) || 0,
             sexe: document.querySelector('input[name="sexe"]:checked')?.value || '-',
             motif: getChecked('motif') + (document.getElementById('motif_autres').value ? ' | ' + document.getElementById('motif_autres').value : ''),
             dent: document.getElementById('dent_concernee').value,
@@ -612,9 +648,6 @@
             showToast();
             document.getElementById('dentalForm').reset();
             switchTab(2);
-        } else {
-            addRow(data);
-            alert("Enregistré localement");
         }
         
         btn.disabled = false;
@@ -632,170 +665,121 @@
                 items.push(item);
             });
             updateStats(items);
+            generateAllTables(items); // Nouvelle fonction stats
             items.reverse().forEach(d => addRow(d));
         });
     }
 
-    window.deleteEntry = function(key) {
-        if(confirm("Confirmer la suppression de cette fiche ?")) {
-            db.ref('extractions').child(key).remove()
-              .then(() => {
-                  alert("Supprimé.");
-              })
-              .catch(e => alert(e.message));
-        }
+    // --- LOGIQUE STATISTIQUE AVANCÉE ---
+
+    function generateAllTables(items) {
+        if(!items.length) return;
+
+        // Fréquences
+        renderFrequencyTable('table-age-sexe', items, 'age_groups', 'sexe');
+        renderSimpleFrequency('table-motif', items, 'motif');
+        renderSimpleFrequency('table-indication', items, 'indication');
+        renderSimpleFrequency('table-type-extraction', items, 'type');
+        renderSimpleFrequency('table-complications', items, 'complications');
+
+        // Croisements
+        renderCrossTable('cross-age-indication', items, 'age_groups', 'indication');
+        renderCrossTable('cross-indication-type', items, 'indication', 'type');
+        renderCrossTable('cross-dent-indication', items, 'dent', 'indication');
+        renderCrossTable('cross-type-complication', items, 'type', 'complications');
+        renderCrossTable('cross-exam-type', items, 'examens', 'type');
+        renderCrossTable('cross-traitement-complication', items, 'traitement_summary', 'complications');
     }
 
-    // --- MOTEUR STATISTIQUE & ÉPIDÉMIOLOGIQUE ---
+    function getAgeGroup(age) {
+        if(age < 15) return "0-14 ans";
+        if(age < 30) return "15-29 ans";
+        if(age < 45) return "30-44 ans";
+        if(age < 60) return "45-59 ans";
+        return "60+ ans";
+    }
+
+    function renderSimpleFrequency(tableId, items, field) {
+        const counts = {};
+        items.forEach(item => {
+            const val = item[field] || 'Non spécifié';
+            val.split(', ').forEach(v => {
+                counts[v] = (counts[v] || 0) + 1;
+            });
+        });
+
+        let html = `<thead><tr><th>${field.toUpperCase()}</th><th>Fréquence (n)</th><th>Pourcentage (%)</th></tr></thead><tbody>`;
+        const total = Object.values(counts).reduce((a, b) => a + b, 0);
+        
+        Object.entries(counts).sort((a,b) => b[1] - a[1]).forEach(([label, count]) => {
+            const pct = ((count / items.length) * 100).toFixed(1);
+            html += `<tr><td>${label}</td><td>${count}</td><td>${pct}%</td></tr>`;
+        });
+        html += `<tr class="row-total"><td>TOTAL (N=${items.length})</td><td>-</td><td>100%</td></tr></tbody>`;
+        document.getElementById(tableId).innerHTML = html;
+    }
+
+    function renderCrossTable(tableId, items, rowField, colField) {
+        const rows = new Set();
+        const cols = new Set();
+        const data = {};
+
+        items.forEach(item => {
+            let rVal = (rowField === 'age_groups') ? getAgeGroup(item.age) : (item[rowField] || '-');
+            let cVal = item[colField] || '-';
+            
+            if(rowField === 'traitement_summary') {
+                rVal = Object.values(item.traitement || {}).some(v => v) ? "Avec Traitement" : "Sans Traitement";
+            }
+
+            // Gérer les choix multiples
+            const rList = rVal.split(', ');
+            const cList = cVal.split(', ');
+
+            rList.forEach(r => {
+                rows.add(r);
+                cList.forEach(c => {
+                    cols.add(c);
+                    const key = `${r}||${c}`;
+                    data[key] = (data[key] || 0) + 1;
+                });
+            });
+        });
+
+        const sortedCols = Array.from(cols).sort();
+        let html = `<thead><tr><th>${rowField} / ${colField}</th>`;
+        sortedCols.forEach(c => html += `<th>${c}</th>`);
+        html += `<th>Total</th></tr></thead><tbody>`;
+
+        Array.from(rows).sort().forEach(r => {
+            let rowSum = 0;
+            html += `<tr><td><b>${r}</b></td>`;
+            sortedCols.forEach(c => {
+                const count = data[`${r}||${c}`] || 0;
+                html += `<td>${count}</td>`;
+                rowSum += count;
+            });
+            html += `<td style="background:#f0f4f8"><b>${rowSum}</b></td></tr>`;
+        });
+        html += `</tbody>`;
+        document.getElementById(tableId).innerHTML = html;
+    }
+
+    function renderFrequencyTable(tableId, items, rowField, colField) {
+        renderCrossTable(tableId, items, rowField, colField);
+    }
+
+    // --- FONCTIONS EXISTANTES ---
+
     function updateStats(items) {
         if(!items.length) return;
-        
-        // 1. Mise à jour des cartes globales
         document.getElementById('stat-total').innerText = items.length;
-        const validAgeItems = items.filter(i => i.age && !isNaN(i.age));
-        const avg = validAgeItems.length ? validAgeItems.reduce((acc, c) => acc + parseInt(c.age), 0) / validAgeItems.length : 0;
+        const validAges = items.map(i => parseInt(i.age)).filter(a => !isNaN(a));
+        const avg = validAges.length ? (validAges.reduce((a,b) => a+b, 0) / validAges.length) : 0;
         document.getElementById('stat-age').innerText = Math.round(avg) + " ans";
         const m = items.filter(i => i.sexe === 'Masculin').length;
         const f = items.filter(i => i.sexe === 'Féminin').length;
-        document.getElementById('stat-ratio').innerText = `${m}:${f}`;
-
-        // 2. Génération des tableaux complexes
-        generateEpidemiologicalTables(items);
-    }
-
-    function generateEpidemiologicalTables(items) {
-        const container = document.getElementById('stat-tables-container');
-        
-        // --- Extracteurs de données ---
-        const extractAgeGrp = i => {
-            const a = parseInt(i.age);
-            if(isNaN(a)) return "Non précisé";
-            if(a < 18) return "< 18 ans";
-            if(a <= 35) return "18-35 ans";
-            if(a <= 50) return "36-50 ans";
-            return "> 50 ans";
-        };
-        const extractSexe = i => i.sexe && i.sexe !== '-' ? i.sexe : "Non précisé";
-        const extractList = str => {
-            if(!str || str === '-') return ["Aucun/Non précisé"];
-            return str.split(/[,|]+/).map(s=>s.trim()).filter(s=>s && s !== '-');
-        };
-        const extractMotif = i => extractList(i.motif);
-        const extractIndication = i => extractList(i.indication);
-        const extractType = i => i.type && i.type !== '-' ? i.type : "Non précisé";
-        const extractComplication = i => extractList(i.complications);
-        const extractDent = i => i.dent && i.dent !== '-' ? i.dent : "Non précisée";
-        const extractExamen = i => extractList(i.examens);
-        const extractTrait = i => {
-            const tr = [];
-            if(i.traitement) {
-                if(i.traitement.antalgique) tr.push("Antalgique");
-                if(i.traitement.antibiotique) tr.push("Antibiotique");
-                if(i.traitement.ains) tr.push("AINS");
-                if(i.traitement.bain_bouche) tr.push("Bain de bouche");
-            }
-            return tr.length ? tr : ["Aucun"];
-        };
-
-        // --- Moteur de matrice croisée ---
-        function getMatrix(data, rowFn, colFn) {
-            const matrix = {};
-            const rowLabels = new Set();
-            const colLabels = new Set();
-
-            data.forEach(item => {
-                const rVals = [].concat(rowFn(item));
-                const cVals = [].concat(colFn(item));
-
-                rVals.forEach(r => {
-                    if(!r) return;
-                    rowLabels.add(r);
-                    if(!matrix[r]) matrix[r] = {};
-                    cVals.forEach(c => {
-                        if(!c) return;
-                        colLabels.add(c);
-                        matrix[r][c] = (matrix[r][c] || 0) + 1;
-                    });
-                });
-            });
-
-            return { rows: Array.from(rowLabels).sort(), cols: Array.from(colLabels).sort(), data: matrix };
-        }
-
-        // --- Rendu HTML des tableaux ---
-        function renderTableHTML(title, headers, trs) {
-            let html = `<div style="margin-bottom: 40px;">`;
-            html += `<div class="section-title" style="margin-bottom:15px; font-size:12px;"><span style="color:var(--text-sec);">${title}</span></div>`;
-            html += `<div class="data-table-container"><table><thead><tr>`;
-            headers.forEach(h => html += `<th>${h}</th>`);
-            html += `</tr></thead><tbody>`;
-            trs.forEach((r, i) => {
-                const isLast = i === trs.length - 1;
-                html += `<tr style="${isLast ? 'font-weight:700; background:#f8fafc;' : ''}">`;
-                r.forEach(c => html += `<td>${c}</td>`);
-                html += `</tr>`;
-            });
-            html += `</tbody></table></div></div>`;
-            return html;
-        }
-
-        function buildCrossTable(title, matrixData) {
-            const {rows, cols, data} = matrixData;
-            const headers = ["Variables", ...cols, "Total"];
-            const trs = [];
-            let colTotals = {};
-
-            rows.forEach(r => {
-                let rowTotal = 0;
-                const rowData = [r];
-                cols.forEach(c => {
-                    const val = data[r][c] || 0;
-                    rowData.push(val);
-                    rowTotal += val;
-                    colTotals[c] = (colTotals[c] || 0) + val;
-                });
-                rowData.push(rowTotal);
-                trs.push(rowData);
-            });
-
-            const footer = ["Total"];
-            let grandTotal = 0;
-            cols.forEach(c => {
-                footer.push(colTotals[c] || 0);
-                grandTotal += colTotals[c] || 0;
-            });
-            footer.push(grandTotal);
-            trs.push(footer);
-
-            return renderTableHTML(title, headers, trs);
-        }
-
-        function buildFreqTable(title, data, valFn) {
-            return buildCrossTable(title, getMatrix(data, valFn, () => "Effectif"));
-        }
-
-        // --- Construction de l'affichage ---
-        let html = "";
-
-        // 1. FRÉQUENCES
-        html += `<h3 style="color:var(--primary); margin:50px 0 20px 0; border-bottom:2px solid var(--border); padding-bottom:10px;">1. FRÉQUENCE</h3>`;
-        html += buildCrossTable("Tableau de répartition selon l'âge et le sexe", getMatrix(items, extractAgeGrp, extractSexe));
-        html += buildFreqTable("Tableau de répartition selon le motif de consultation", items, extractMotif);
-        html += buildFreqTable("Tableau de répartition selon l'indication de l'extraction", items, extractIndication);
-        html += buildFreqTable("Tableau de répartition selon le type d'extraction", items, extractType);
-        html += buildFreqTable("Tableau de répartition selon les complications", items, extractComplication);
-
-        // 2. CROISEMENTS
-        html += `<h3 style="color:var(--primary); margin:50px 0 20px 0; border-bottom:2px solid var(--border); padding-bottom:10px;">2. CROISEMENT</h3>`;
-        html += buildCrossTable("Âge et Indications", getMatrix(items, extractAgeGrp, extractIndication));
-        html += buildCrossTable("Âge et Sexe", getMatrix(items, extractAgeGrp, extractSexe));
-        html += buildCrossTable("Indications de l'extraction et Type d'extraction", getMatrix(items, extractIndication, extractType));
-        html += buildCrossTable("Dent concernée et Indications", getMatrix(items, extractDent, extractIndication));
-        html += buildCrossTable("Type d'extraction et Complications", getMatrix(items, extractType, extractComplication));
-        html += buildCrossTable("Examen complémentaire et Type d'extraction", getMatrix(items, extractExamen, extractType));
-        html += buildCrossTable("Traitement médical et Complications", getMatrix(items, extractTrait, extractComplication));
-
-        container.innerHTML = html;
+        document.getElementById('stat-ratio').innerText = f > 0 ? (m/f).toFixed(1) : m;
     }
 
     function addRow(d) {
@@ -817,50 +801,43 @@
         body.appendChild(row);
     }
 
+    window.deleteEntry = function(key) {
+        if(confirm("Confirmer la suppression de cette fiche ?")) {
+            db.ref('extractions').child(key).remove().then(() => alert("Supprimé."));
+        }
+    }
+
     window.viewDetails = function(encoded) {
         const d = JSON.parse(decodeURIComponent(escape(atob(encoded))));
         const body = document.getElementById('modalBody');
         body.innerHTML = "";
-        
-        const labels = {
-            fiche: "N° Fiche",
-            enqueteur: "Enquêteur",
-            service: "Service",
-            date: "Date Consultation",
-            age: "Âge",
-            sexe: "Sexe",
-            motif: "Motif de Consultation",
-            dent: "Dent concernée",
-            arcade: "Arcade",
-            indication: "Indication d'extraction",
-            examens: "Examens complémentaires",
-            type: "Type d'extraction",
-            traitement: "Traitement associé",
-            complications: "Complications post-op",
-            observations: "Observations"
-        };
-
+        const labels = {fiche:"N° Fiche",enqueteur:"Enquêteur",age:"Âge",sexe:"Sexe",motif:"Motif",dent:"Dent",indication:"Indication",type:"Type",complications:"Complications"};
         Object.keys(labels).forEach(k => {
-            if(!d[k]) return;
-            let val = d[k];
-            if(k === 'traitement') {
-                val = Object.entries(val)
-                    .filter(([_, v]) => v)
-                    .map(([subK, subV]) => `<span style="color:var(--primary)">${subK}:</span> ${subV}`)
-                    .join('<br>');
-            }
-            if(!val) return;
-            body.innerHTML += `<div class="detail-item"><small style="text-transform:uppercase; color:var(--text-sec); font-size:10px; font-weight:800;">${labels[k]}</small><div style="margin-top:5px; font-weight:600;">${val}</div></div>`;
+            if(d[k]) body.innerHTML += `<div class="detail-item"><small>${labels[k]}</small><div>${d[k]}</div></div>`;
         });
         document.getElementById('detailModal').style.display = "block";
     }
 
     window.closeModal = function() { document.getElementById('detailModal').style.display = "none"; }
-    window.onclick = e => { if(e.target == document.getElementById('detailModal')) closeModal(); }
+
+    function exportToCSV() {
+        db.ref('extractions').once('value', snap => {
+            let csv = "Fiche,Age,Sexe,Motif,Dent,Indication,Type,Complications\n";
+            snap.forEach(c => {
+                const d = c.val();
+                csv += `"${d.fiche}","${d.age}","${d.sexe}","${d.motif}","${d.dent}","${d.indication}","${d.type}","${d.complications}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Donnees_Makala_Extractions.csv');
+            a.click();
+        });
+    }
 
     window.onscroll = () => {
-        const b = document.getElementById('backToTop');
-        b.style.display = (window.scrollY > 500) ? "block" : "none";
+        document.getElementById('backToTop').style.display = (window.scrollY > 500) ? "block" : "none";
     };
     document.getElementById('backToTop').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
 </script>
